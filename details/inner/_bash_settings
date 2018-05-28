@@ -1,0 +1,131 @@
+add_items_to_environment_variable()
+{
+	if [ $# -lt 3 ]
+	then
+		echo "usage: $FUNCNAME <environment variable name> head/tail"\
+			" <environment variable value 1> <environment variable value 2> ..."
+		echo "examples:"
+		echo "    1) \"$FUNCNAME PATH head /path1\" equals to \"export PATH=/path1:\$PATH\""
+		echo "    2) \"$FUNCNAME PATH tail /path_without_spaces /path with spaces\" equals to"\
+			" \"export PATH=\$PATH:/path_without_spaces:/path with spaces\""
+		return 1
+	fi
+
+	local env_name="$1"
+	local initial_env_value="${!1}"
+	local add_flag="$2"
+
+	shift
+	shift
+
+	if [ -z "$initial_env_value" ]
+	then
+		export $env_name="$1"
+		shift
+	fi
+
+	while [ $# -gt 0 ] 
+	do
+		local env_value="$1"
+
+		shift
+
+		if [ -n "`echo ${!env_name} | grep \"$env_value\"`" ]
+		then
+			continue
+		fi
+
+		if [ "$add_flag" = "head" ]
+		then
+			export $env_name="$env_value"":${!env_name}"
+		else
+			export $env_name="${!env_name}"":$env_value"
+		fi
+	done
+}
+
+# for terminal prompt representation
+if [ "$HOST_ENV_TYPE" = "Self_Linux" ]
+then
+	export PS1="\[\e]0;\u@\h: \W\a\]${debian_chroot:+($debian_chroot)}[foo@my_machine \W]\$ "
+else
+	export PS1="\[\e]0;\u@\h: \W\a\]${debian_chroot:+($debian_chroot)}[\u@\h \W]\$ "
+fi
+
+# for Shell type
+_shell_type_="`which bash`"
+if [ -n "$_shell_type_" ]
+then
+	export SHELL="$_shell_type_"
+else
+	echo "[$(basename $0)][WARNING] Bash not found"
+fi
+
+export SHARE_DIR=$D_DRIVE/SharedStuff
+alias S="cd $SHARE_DIR"
+mkdir -p $SHARE_DIR
+
+export CASDK_ROOT=$SHARE_DIR/code/casdk
+export CA_SDK_ROOT=$CASDK_ROOT
+alias cd_casdk="cd $CASDK_ROOT"
+
+export CPP_ASSISTANT_ROOT=$SHARE_DIR/code/cpp_assistant
+alias cd_cpp_assistant="cd $CPP_ASSISTANT_ROOT"
+
+export TINY_PROG_ROOT=$E_DRIVE/programs
+mkdir -p $TINY_PROG_ROOT
+
+mkdir -p $HOME/bin $HOME/etc $HOME/include $HOME/lib $HOME/docs $HOME/logs $HOME/src
+add_items_to_environment_variable PATH tail $HOME/bin $LINUX_HOME/bin
+
+add_items_to_environment_variable LD_LIBRARY_PATH tail /usr/local/lib $LINUX_HOME/lib $TINY_PROG_ROOT/ProtobufTest/ProtobufLibrary
+
+# for bjam compiler
+export BOOST_ROOT=$LINUX_HOME/etc/bjam/tools/build/v2
+
+export CPU_CORES=`cat /proc/cpuinfo | grep "processor" | wc -l`
+
+# for Python
+add_items_to_environment_variable PYTHONPATH tail $LINUX_HOME/lib/customized_python_libraries
+
+# recommendation: import the customized vimrc into the system vimrc instead of defining the alias below
+#alias vim="vim -c \"set tabstop=4\" -c \"set shiftwidth=4\" -c \"set autoindent\" -c \"set nu\"\
+#	-c \"set fileencodings=gb18030,cp936,utf-8,ucs-bom,gbk,gb2312,latin1\""
+
+alias valgrind="valgrind --tool=memcheck --leak-check=full --track-origins=yes --show-reachable=yes --log-file=valgrind_report.log"
+alias pugrep="pgrep -u $USER"
+alias D="cd $D_DRIVE"
+alias E="cd $E_DRIVE"
+alias F="cd $F_DRIVE"
+alias L="cd $LINUX_HOME"
+alias dsk="cd $HOME/桌面"
+alias make="time make"
+alias jmake="time make -j $CPU_CORES"
+alias vmake="time make VERBOSE=1"
+alias vjmake="time make -j $CPU_CORES VERBOSE=1"
+alias dmake="time make DEBUG=1"
+alias djmake="time make -j $CPU_CORES DEBUG=1"
+alias amake="time make -j $CPU_CORES DEBUG=1 VERBOSE=1"
+alias startx="echo \"startx should not be used when you have entered a graphic desktop\""
+alias pst="ps -eLo ruser,pid,ppid,lwp,psr,args"
+alias good_color="echo \"#CCE8CF, or Red[204]|Green[232]|Blue[207]\""
+alias tabs_to_spaces="expand"
+alias tabs_to_4spaces="expand -t 4"
+alias clear_swapness="sync;sudo swapoff -a;sudo swapon -a"
+alias retrieve_memory="sudo $LINUX_HOME/bin/retrieve_memory.sh"
+#alias rm=mv $* $HOME/Trash
+alias extern_monitor_only="xrandr --output DP2  --auto --output eDP1 --off"
+
+# permits core file generation for programs
+ulimit -c unlimited
+
+# prepares the directory for terminal session logs
+mkdir -p $D_DRIVE/tmp/session_logs
+alias kl="script -f $D_DRIVE/tmp/session_logs/session_log_\`date +%Y-%m-%d_%H_%M_%S\`.txt"
+
+# disables copy functionality of the mouse middle button
+if [ ! -f ~/.Xmodmap ]
+then
+	echo "pointer = 1 25 3 4 5 6 7 2" >> ~/.Xmodmap
+fi
+

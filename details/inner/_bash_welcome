@@ -1,0 +1,25 @@
+RECOMMENDED_COLUMNS=120
+
+if [ $COLUMNS -lt $RECOMMENDED_COLUMNS ]
+then
+	_EXPECTED_COLUMNS=$COLUMNS
+else
+	_EXPECTED_COLUMNS=$RECOMMENDED_COLUMNS
+fi
+
+for ((i = 0; i < $_EXPECTED_COLUMNS; i++)); do printf "#"; done
+echo ""
+echo "###"
+echo "### Home directory of Lazy-script: $LAZY_SCRIPT_HOME"
+echo "###"
+echo "### Shell: $SHELL"
+echo "###"
+for ((i = 0; i < $_EXPECTED_COLUMNS; i++)); do printf "#"; done
+echo ""
+echo "Several tips:"
+echo "1. Recommended terminal width: $RECOMMENDED_COLUMNS characters or above"
+echo "2. If you want to record your operations in terminal, just run \"kl\" manually."
+echo "3. An example of running GNU configure program:"\
+	" ./configure --prefix=/usr/local --bindir=/usr/local/bin"\
+	" --libdir=/usr/local/lib --headerdir=/usr/local/include ."
+

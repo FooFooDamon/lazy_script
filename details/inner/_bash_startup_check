@@ -1,0 +1,22 @@
+#
+# _bash_startup_check.sh
+#
+#  Created on: 2018-05-28
+#
+#      Author: WenXiongchang (udc577@126.com)
+#
+# Description: For checking during bash initialization.
+#
+#       Usage: This script should be used by inner modules only.
+#
+
+warn_if_command_not_installed expect
+warn_if_command_not_installed perl
+warn_if_command_not_installed python
+warn_if_command_not_installed make
+warn_if_command_not_installed cmake
+warn_if_command_not_installed gcc
+warn_if_command_not_installed g++
+warn_if_command_not_installed git
+warn_if_command_not_installed svn
+

@@ -1,0 +1,16 @@
+#
+# _bash_identity.sh
+#
+#  Created on: 2018-05-28
+#
+#      Author: WenXiongchang (udc577@126.com)
+#
+# Description: For determining some identity info such as host, working directories and so on.
+#
+#       Usage: This script should be used by inner modules only.
+#
+
+#export LAZY_SCRIPT_HOME=`cd $SCRIPT_DIR && pwd`
+export LAZY_SCRIPT_HOME=$__LAZY_SCRIPT_HOME__
+# TODO: more ...
+
