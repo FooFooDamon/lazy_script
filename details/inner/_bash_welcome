@@ -1,3 +1,15 @@
+#
+# _bash_welcome.sh
+#
+#  Created on: 2018-05-28
+#
+#      Author: WenXiongchang (udc577@126.com)
+#
+# Description: Hints displayed on terminal when this script is imported.
+#
+#       Usage: This script should be used by inner modules only.
+#
+
 RECOMMENDED_COLUMNS=120
 
 if [ $COLUMNS -lt $RECOMMENDED_COLUMNS ]
@@ -10,16 +22,19 @@ fi
 for ((i = 0; i < $_EXPECTED_COLUMNS; i++)); do printf "#"; done
 echo ""
 echo "###"
+echo "### Operating system: $OS_NAME $OS_FULL_VERSION"
+echo "###"
 echo "### Home directory of Lazy-script: $LAZY_SCRIPT_HOME"
 echo "###"
 echo "### Shell: $SHELL"
+echo "###"
+echo "### Author: Wen Xiongchang(Email: udc577@126.com; GitHub: FooFooDamon)"
 echo "###"
 for ((i = 0; i < $_EXPECTED_COLUMNS; i++)); do printf "#"; done
 echo ""
 echo "Several tips:"
 echo "1. Recommended terminal width: $RECOMMENDED_COLUMNS characters or above"
-echo "2. If you want to record your operations in terminal, just run \"kl\" manually."
-echo "3. An example of running GNU configure program:"\
-	" ./configure --prefix=/usr/local --bindir=/usr/local/bin"\
-	" --libdir=/usr/local/lib --headerdir=/usr/local/include ."
+echo "2. If you want to record your operations in terminal, just run \"tl\" manually."
+echo "3. For detailed usage of a specific Lazy-script, just run \"<target script name> -h\" to get it."
+echo "Enjoy!"
 

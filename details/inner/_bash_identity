@@ -12,5 +12,9 @@
 
 #export LAZY_SCRIPT_HOME=`cd $SCRIPT_DIR && pwd`
 export LAZY_SCRIPT_HOME=$__LAZY_SCRIPT_HOME__
-# TODO: more ...
+
+export OS_NAME=`lsb_release -a 2> /dev/null | grep -i "Distributor ID" | awk -F : '{ print $2 }' | awk '{ print $1 }'`
+export OS_FULL_VERSION=`lsb_release -a 2> /dev/null | grep -i "Release" | awk -F : '{ print $2 }' | awk '{ print $1 }'`
+export OS_MAJOR_VERSION=`echo $OS_FULL_VERSION | awk -F . '{ printf("%d\n", $1) }'`
+export OS_MINOR_VERSION=`echo $OS_FULL_VERSION | awk -F . '{ printf("%d\n", $2) }'`
 

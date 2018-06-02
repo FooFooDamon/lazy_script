@@ -27,9 +27,15 @@ SCRIPT_DIR="$(dirname $0)"
 _EXIT_SIG_LIST=(INT KILL TERM QUIT)
 _SIG_ITEMS=(INT KILL TERM QUIT USR1 PIPE HUP)
 
+LZ_TRUE=0
+LZ_FALSE=-1
+
 ###########################################################
 #####
 ##### Functions
+#####
+##### NOTE: For usage of boolean functions(that is:
+#####     functions returning true or false), see is_integer().
 #####
 ###########################################################
 
@@ -58,11 +64,46 @@ handle_signal()
 	fi
 }
 
+#
+# Usage example:
+#
+# if (is_integer 123456)
+# then
+#     echo "It's an integer."
+# else
+#     echo "It's not an integer"
+# fi
+#
+# Or:
+#
+# (is_integer 123456) && echo "It's an integer" || echo "It's not an integer"
+#
+# Any functions returning true or false can be used like this.
+# Note that the parentheses are optional but recommended.
+#
 is_integer()
 {
-	local _value=$1
-	
-	[[ $_value == *[!0-9+\-]* ]] && echo 0 || echo 1
+	[[ $1 == *[!0-9+\-]* ]] && return $LZ_TRUE || return $LZ_FALSE
+}
+
+to_lower_case()
+{
+	echo $* | tr 'A-Z' 'a-z'
+}
+
+to_upper_case()
+{
+	echo $* | tr 'a-z' 'A-Z'
+}
+
+is_strictly_matched()
+{
+	[[ "$1" == "$2" ]] && return $LZ_TRUE || return $LZ_FALSE
+}
+
+is_case_insensitively_matched()
+{
+	[[ "`to_lower_case $1`" == "`to_lower_case $2`" ]] && return $LZ_TRUE || return $LZ_FALSE
 }
 
 lzwarn()
@@ -81,14 +122,96 @@ oops_quit()
 	exit 1
 }
 
-quit_if_command_not_installed()
+count_down_quit()
 {
-	[ -z "`which \"$1\"`" ] && oops_quit "Command not installed: $1\nPlease intall it first!"
+	printf "*** Script going to exit:" >&2
+	for i in `seq 1 10 | awk '{ printf("%02d\n", $1) }' | sort -r`
+	do
+		printf " $i" >&2
+		sleep 1
+	done
+	exit
 }
 
-warn_if_command_not_installed()
+is_installed()
 {
-	[ -z "`which \"$1\"`" ] && lzwarn "*** Command not installed: $1\nPlease intall it first!"
+	[ -n "`which \"$1\"`" ] && return $LZ_TRUE || return $LZ_FALSE
+}
+
+quit_if_not_installed()
+{
+	is_installed "$1" || oops_quit "Command not installed: $1\nPlease intall it first!"
+}
+
+warn_if_not_installed()
+{
+	is_installed "$1" || lzwarn "*** Command not installed: $1\nPlease intall it first!"
+}
+
+quit_if_not_root()
+{
+	if [ "$USER" != "root" ]
+	then
+		lzerror "*** Current operation requires root user. Or you can try \"sudo\"."
+		exit 1
+	fi
+}
+
+env_var_push()
+{
+	if [ $# -lt 3 ]
+	then
+		echo "Usage: $FUNCNAME --head | --tail <environment variable name>"\
+			" <environment variable value 1> <environment variable value 2> ..." >&2
+		echo "Examples:" >&2
+		echo "    1) \"$FUNCNAME --head PATH /path1\" equals to \"export PATH=/path1:\$PATH\"" >&2
+		echo "    2) \"$FUNCNAME --tail PATH /path_without_spaces \"/path with spaces\"\" equals to"\
+			" \"export PATH=\$PATH:/path_without_spaces:\"/path with spaces\"\"" >&2
+		return $LZ_FALSE
+	fi
+
+	local _add_flag="$1"
+	local _env_name="$2"
+	local _initial_env_value="${!2}"
+
+	shift
+	shift
+
+	if [ -z "$_initial_env_value" ]
+	then
+		export $_env_name="$1"
+		shift
+	fi
+
+	while [ $# -gt 0 ] 
+	do
+		local _env_value="$1"
+
+		shift
+
+		# Checks if this environment variable already exists.
+		if [ -n "`echo ${!_env_name} | grep \"$_env_value\"`" ]
+		then
+			continue
+		fi
+
+		if [ "$_add_flag" = "--head" ]
+		then
+			export $_env_name="$_env_value"":${!_env_name}"
+		else
+			export $_env_name="${!_env_name}"":$_env_value"
+		fi
+	done
+}
+
+env_var_push_front()
+{
+	env_var_push --head $*
+}
+
+env_var_push_back()
+{
+	env_var_push --tail $*
 }
 
 
@@ -98,8 +221,22 @@ warn_if_command_not_installed()
 #####
 ###########################################################
 
+#
+# Registers signals.
+#
 for i in ${_SIG_ITEMS[@]}
 do
 	trap "handle_signal $i handle_sig$i" $i
 done
+
+#
+# Checks if user wants help.
+# The script to which this _shell_common.sh is imported
+# MUST implement the usage() function!
+#
+if [ `echo $* | grep "\ \-h\ \|\ \-\-help\ " -c` -gt 0 ]
+then
+	usage
+	exit 0
+fi
 

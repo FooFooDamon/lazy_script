@@ -1,38 +1,69 @@
-_BASH_PROFILE_CANDIDATES=("$HOME/.bash_profile" "$HOME/.bashrc")
+BASH_PROFILE_CANDIDATES=("$HOME/.bash_profile" "$HOME/.bashrc")
 
-for i in ${_BASH_PROFILE_CANDIDATES[*]}
+for i in ${BASH_PROFILE_CANDIDATES[*]}
 do
 	if [ -f $i ]
 	then
-		_bash_profile=$i
+		bash_profile=$i
 		break
 	fi
 done
 
+if [ -z "$bash_profile" ]
+then
+	echo "*** Can not find bashrc among these candidates: ${BASH_PROFILE_CANDIDATES[@]}" >&2
+	exit 1
+fi
+
+if [ "$1" = "remove" ]
+then
+	is_add=0
+else
+	is_add=1
+fi
+
 __LAZY_SCRIPT_HOME__=`cd $(dirname $0) && pwd`
 
-if [ `grep lazy_script $_bash_profile -c` -eq 0 ]
+if [ $is_add -eq 1 ]
 then
-	echo "Installing Lazy-script, please wait ..." >&2
+	if [ `grep lazy_script $bash_profile -c` -eq 0 ]
+	then
+		echo "Installing Lazy-script, please wait ..." >&2
+	else
+		echo "Lazy-script has been installed." >&2
+		printf "${bash_profile}: "
+		grep --color=auto "export __LAZY_SCRIPT_HOME__" $bash_profile
+		printf "${bash_profile}: "
+		grep --color=auto import_lazy_script $bash_profile
+		exit 0
+	fi
+else
+	echo "Removing Lazy-script, please wait ..." >&2
+fi
 
-	# Let the user feel the installation process.
-	printf "Progress: 0%%" >&2
-	for i in `seq 1 4`
-	do
-		sleep 1
-		printf " $((25 * $i))%%" >&2
-	done
+# Let the user feel the installation/uninstallation process.
+printf "Progress: 0%%" >&2
+for i in `seq 1 4`
+do
+	sleep 1
+	printf " $((25 * $i))%%" >&2
+done
 
-	# The actual installation is quite simple, ha ha ha ...
-	echo "export __LAZY_SCRIPT_HOME__=$__LAZY_SCRIPT_HOME__" >> $_bash_profile
-	echo ". \$__LAZY_SCRIPT_HOME__/import_lazy_script.sh -a" >> $_bash_profile
-
+# The actual installation/uninstallation is quite simple, ha ha ha ...
+if [ $is_add -eq 1 ]
+then
+	find "$__LAZY_SCRIPT_HOME__"/ -type f | xargs chmod 777
+	echo "export __LAZY_SCRIPT_HOME__=$__LAZY_SCRIPT_HOME__" >> $bash_profile
+	echo ". \$__LAZY_SCRIPT_HOME__/import_lazy_script.sh -a" >> $bash_profile
 	printf "\nLazy-script was installed successfully! Enjoy!\n"
 else
-	echo "Lazy-script has been installed." >&2
-	printf "${_bash_profile}: "
-	grep --color=auto "export __LAZY_SCRIPT_HOME__" $_bash_profile
-	printf "${_bash_profile}: "
-	grep --color=auto import_lazy_script $_bash_profile
+	source $__LAZY_SCRIPT_HOME__/details/inner/_shell_common.sh
+	source $__LAZY_SCRIPT_HOME__/details/inner/_bash_identity
+	source $__LAZY_SCRIPT_HOME__/details/inner/_bash_settings
+	[ -f $bash_profile ] && sed -i "/__LAZY_SCRIPT_HOME__/d" $bash_profile
+	[ -f $VIMRC ] && sed -i "/vimrc.private/d" $VIMRC
+	echo "Lazy-script: Congratulations, you've get rid of me ~ ~ ~" >&2
+	echo "You can manually remove these programs if you don't need them: ${_NECESSARY_TOOLS[@]}" >&2
+	echo "And these directories: ${_NECESSARY_DIRS[@]}" >&2
 fi
 

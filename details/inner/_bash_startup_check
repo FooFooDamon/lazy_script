@@ -10,13 +10,56 @@
 #       Usage: This script should be used by inner modules only.
 #
 
-warn_if_command_not_installed expect
-warn_if_command_not_installed perl
-warn_if_command_not_installed python
-warn_if_command_not_installed make
-warn_if_command_not_installed cmake
-warn_if_command_not_installed gcc
-warn_if_command_not_installed g++
-warn_if_command_not_installed git
-warn_if_command_not_installed svn
+for i in ${_NECESSARY_TOOLS[@]}
+do
+	warn_if_not_installed $i
+done
+
+for i in ${_NECESSARY_DIRS[@]}
+do
+	mkdir -p "$i"
+done
+
+# Permits core file generation for programs
+ulimit -c unlimited
+
+# Disables copy functionality of the mouse middle button
+if [ ! -f ~/.Xmodmap ]
+then
+	echo "pointer = 1 25 3 4 5 6 7 2" >> ~/.Xmodmap
+fi
+
+_PRIVATE_DIR=$__LAZY_SCRIPT_HOME__/details/private
+
+#
+# Private bashrc
+#
+
+if [ ! -f $_PRIVATE_DIR/_bash_private ]
+then
+	echo "#" > $_PRIVATE_DIR/_bash_private
+	echo "# Put your own configurations in this file." >> $_PRIVATE_DIR/_bash_private
+	echo "#" >> $_PRIVATE_DIR/_bash_private
+fi
+
+#
+# For vim
+#
+
+if [ ! -f $_PRIVATE_DIR/vim/vimrc.private ]
+then
+	echo "\"" > $_PRIVATE_DIR/vim/vimrc.private
+	echo "\" Put your own configurations in this file." >> $_PRIVATE_DIR/vim/vimrc.private
+	echo "\"" >> $_PRIVATE_DIR/vim/vimrc.private
+fi
+
+if [ ! -f $VIMRC ]
+then
+	touch $VIMRC
+fi
+
+if [ `grep "$_PRIVATE_DIR/vim/vimrc\.private" $VIMRC -c` -eq 0 ]
+then
+	echo "source $_PRIVATE_DIR/vim/vimrc.private" >> $VIMRC
+fi
 
