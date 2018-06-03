@@ -21,8 +21,8 @@ shopt -s expand_aliases
 
 _DATE_TIME_HINT="date +%Y-%m-%d_%H:%M:%S"
 
-SCRIPT_NAME="$(basename $0)"
-SCRIPT_DIR="$(dirname $0)"
+SCRIPT_NAME=$(basename "$0")
+SCRIPT_DIR=`cd $(dirname "$0") && pwd`
 
 _EXIT_SIG_LIST=(INT KILL TERM QUIT)
 _SIG_ITEMS=(INT KILL TERM QUIT USR1 PIPE HUP)

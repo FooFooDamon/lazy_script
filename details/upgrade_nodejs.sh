@@ -1,7 +1,7 @@
 export __LAZY_SCRIPT_HOME__=$(dirname $0)/..
 source $__LAZY_SCRIPT_HOME__/import_lazy_script.sh
 
-is_installed || sudo prog_install npm
+is_installed || sudo $PROG_INSTALL npm
 
 sudo npm cache clean -f && sudo npm install n -g && sudo n stable && echo "NodeJS version after upgrade: $(node -v)"
 echo "If you find any problem, visit:"
