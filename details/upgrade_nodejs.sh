@@ -1,3 +1,9 @@
+usage()
+{
+	echo "$(basename $0) - Upgrades NodeJS to the latest version." >&2
+	echo "Usage: $(basename $0)" >&2
+}
+
 export __LAZY_SCRIPT_HOME__=$(dirname $0)/..
 source $__LAZY_SCRIPT_HOME__/import_lazy_script.sh
 

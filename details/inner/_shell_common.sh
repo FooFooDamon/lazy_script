@@ -234,9 +234,14 @@ done
 # The script to which this _shell_common.sh is imported
 # MUST implement the usage() function!
 #
-if [ `echo $* | grep "\ \-h\ \|\ \-\-help\ " -c` -gt 0 ]
-then
-	usage
-	exit 0
-fi
+# ***Note that it must be "$@" here, not $@, $* or "$*" !!!***
+#
+for i in "$@"
+do
+	if (is_strictly_matched "$i" "-h" || is_strictly_matched "$i" "--help")
+	then
+		usage
+		exit 0
+	fi
+done
 

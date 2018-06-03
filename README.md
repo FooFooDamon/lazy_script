@@ -1,7 +1,6 @@
 # 懒虫脚本 | Lazy-script
 
 ## 简介 | Introduction
-^^^^^^^^^^^^^^^^^^^^^^
 
 一个为懒虫打造的脚本工具箱。脚本类型包括但不限于`Shell`、`Expect`、`Perl`和`Python`。可用于管理你的系统、便于格式化及编译代码、信息搜索及提取、自定义测试，等等。
 
@@ -12,7 +11,6 @@ A script box for lazy guys. Script types include but are not limited to `Shell`,
 ***Less code, better world!***
 
 ## 安装及卸载 | Installation and Uninstallation
------------------------------------------------
 
 ### 受支持平台 | Supported Platforms
 

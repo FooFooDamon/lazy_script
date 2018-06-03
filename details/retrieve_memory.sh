@@ -1,3 +1,9 @@
+usage()
+{
+	echo "$(basename $0) - Retrieves unused memory" >&2
+	echo "Usage: sudo $(basename $0)" >&2
+}
+
 source $(dirname $0)/inner/_shell_common.sh
 
 quit_if_not_root

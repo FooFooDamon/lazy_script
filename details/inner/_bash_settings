@@ -41,7 +41,7 @@ env_var_push_front PATH $HOME/bin $__LAZY_SCRIPT_HOME__/details $__LAZY_SCRIPT_H
 env_var_push_front LD_LIBRARY_PATH $HOME/lib /usr/local/lib
 env_var_push_front PYTHONPATH $__LAZY_SCRIPT_HOME__/lib/customized_python_libraries
 
-alias sudo='sudo env PATH=$PATH LD_LIBRARY_PATH=$LD_LIBRARY_PATH PYTHONPATH=$PYTHONPATH'
+alias sudo='sudo env LAZY_SCRIPT_HOME=$__LAZY_SCRIPT_HOME__ PATH=$PATH LD_LIBRARY_PATH=$LD_LIBRARY_PATH PYTHONPATH=$PYTHONPATH'
 
 export CPU_CORES=`cat /proc/cpuinfo | grep "processor" | wc -l`
 alias make="time make"
@@ -63,7 +63,7 @@ alias soft_bg_color=soft_background_color
 alias tabs_to_spaces="expand"
 alias tabs_to_4spaces="expand -t 4"
 alias clear_swapness="sync;sudo swapoff -a;sudo swapon -a"
-alias retrieve_memory="sudo $__LAZY_SCRIPT_HOME__/details/retrieve_memory.sh"
+#alias retrieve_memory="sudo $__LAZY_SCRIPT_HOME__/details/retrieve_memory.sh"
 #alias rm=mv $* $HOME/Trash
 alias tl="script -f $HOME/logs/terminal_log_\`date +%Y-%m-%d_%H_%M_%S\`.txt"
 
