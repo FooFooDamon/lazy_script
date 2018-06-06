@@ -56,6 +56,6 @@ then
 fi
 
 [ -f $VIMRC ] || touch $VIMRC
-[ `grep "bash\.tpl" $VIMRC -c` -gt 0 ] || echo "autocmd BufNewFile *.sh 0r \$LAZY_SCRIPT_HOME/details/etc/bash.tpl" >> $VIMRC
+[ `grep "vimrc\.public" $VIMRC -c` -gt 0 ] || echo "source \$LAZY_SCRIPT_HOME/details/etc/vimrc.public" >> $VIMRC
 [ `grep "vimrc\.private" $VIMRC -c` -gt 0 ] || echo "source \$LAZY_SCRIPT_HOME/details/private/vim/vimrc.private" >> $VIMRC
 
