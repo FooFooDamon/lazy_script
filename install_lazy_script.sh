@@ -55,13 +55,14 @@ then
 	find "$__LAZY_SCRIPT_HOME__"/ -type f | xargs chmod 777
 	echo "export __LAZY_SCRIPT_HOME__=$__LAZY_SCRIPT_HOME__" >> $bash_profile
 	echo ". \$__LAZY_SCRIPT_HOME__/import_lazy_script.sh -a" >> $bash_profile
+	ln -s -f -n $__LAZY_SCRIPT_HOME__/details/inner/_shell_common.sh $__LAZY_SCRIPT_HOME__/details/shell_common.sh
 	printf "\nLazy-script was installed successfully! Now \e[0;33mstart a terminal manually to initialize this script box!\e[0m\n"
 else
 	source $__LAZY_SCRIPT_HOME__/details/inner/_shell_common.sh
 	source $__LAZY_SCRIPT_HOME__/details/inner/_bash_identity
 	source $__LAZY_SCRIPT_HOME__/details/inner/_bash_settings
 	[ -f $bash_profile ] && sed -i "/__LAZY_SCRIPT_HOME__/d" $bash_profile
-	[ -f $VIMRC ] && sed -i "/vimrc.private/d" $VIMRC
+	[ -f $VIMRC ] && sed -i "/LAZY_SCRIPT_HOME/d" $VIMRC
 	echo "Lazy-script: Congratulations, you've get rid of me ~ ~ ~" >&2
 	echo "You can manually remove these programs if you don't need them: ${_NECESSARY_TOOLS[@]}" >&2
 	echo "And these directories: ${_NECESSARY_DIRS[@]}" >&2

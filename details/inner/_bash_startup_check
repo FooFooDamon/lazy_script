@@ -29,6 +29,8 @@ then
 	echo "pointer = 1 25 3 4 5 6 7 2" >> ~/.Xmodmap
 fi
 
+[ -f $__LAZY_SCRIPT_HOME__/details/shell_common.sh ] || ln -s -f -n $__LAZY_SCRIPT_HOME__/details/inner/_shell_common.sh $__LAZY_SCRIPT_HOME__/details/shell_common.sh
+
 _PRIVATE_DIR=$__LAZY_SCRIPT_HOME__/details/private
 
 #
@@ -53,13 +55,7 @@ then
 	echo "\"" >> $_PRIVATE_DIR/vim/vimrc.private
 fi
 
-if [ ! -f $VIMRC ]
-then
-	touch $VIMRC
-fi
-
-if [ `grep "$_PRIVATE_DIR/vim/vimrc\.private" $VIMRC -c` -eq 0 ]
-then
-	echo "source $_PRIVATE_DIR/vim/vimrc.private" >> $VIMRC
-fi
+[ -f $VIMRC ] || touch $VIMRC
+[ `grep "bash\.tpl" $VIMRC -c` -gt 0 ] || echo "autocmd BufNewFile *.sh 0r \$LAZY_SCRIPT_HOME/details/etc/bash.tpl" >> $VIMRC
+[ `grep "vimrc\.private" $VIMRC -c` -gt 0 ] || echo "source \$LAZY_SCRIPT_HOME/details/private/vim/vimrc.private" >> $VIMRC
 

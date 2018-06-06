@@ -8,7 +8,9 @@
 # Description: Some required or frequently used tools, such as constants,
 #              (environment) variables, functions and prerequisite operations.
 #
-#       Usage: This script should be used by inner modules only.
+#       Usage: This script should not be executed directly,
+#              it should be imported into the target script file
+#              using 'source' or '.' syntax.
 #
 
 shopt -s expand_aliases
@@ -24,8 +26,17 @@ _DATE_TIME_HINT="date +%Y-%m-%d_%H:%M:%S"
 SCRIPT_NAME=$(basename "$0")
 SCRIPT_DIR=`cd $(dirname "$0") && pwd`
 
-_EXIT_SIG_LIST=(INT KILL TERM QUIT)
-_SIG_ITEMS=(INT KILL TERM QUIT USR1 PIPE HUP)
+_EXIT_SIG_LIST=(INT KILL TERM QUIT STOP)
+
+# TODO: Use 'kill -l' to fetch these items automatically!
+_SIG_ITEMS=(HUP INT QUIT ILL \
+	TRAP ABRT BUS FPE \
+	KILL USR1 SEGV USR2 \
+	PIPE ALRM TERM STKFLT \
+	CHLD CONT STOP TSTP \
+	TTIN TTOU URG XCPU \
+	XFSZ VTALRM PROF WINCH \
+	IO PWR SYS)
 
 LZ_TRUE=0
 LZ_FALSE=-1
@@ -48,18 +59,25 @@ handle_signal()
 {
 	local _sig=$1
 
-	echo "$($_DATE_TIME_HINT): ${SCRIPT_NAME}: SIG$_sig captured" >&2
+	if [ "$_sig" != "CHLD" ]
+	then
+		lzwarn "$($_DATE_TIME_HINT): ${SCRIPT_NAME}: SIG$_sig captured"
+	fi
 
 	if [ -n "$2" ]
 	then
 		sig_handler=$2
-		echo "$($_DATE_TIME_HINT): ${SCRIPT_NAME}: Signal handler [$sig_handler] is about to run." >&2
+		if [ "$_sig" != "CHLD" ]
+		then
+			lzwarn "$($_DATE_TIME_HINT): ${SCRIPT_NAME}: SIG$_sig captured"
+			lzwarn "$($_DATE_TIME_HINT): ${SCRIPT_NAME}: Signal handler [$sig_handler] is about to run."
+		fi
 		$sig_handler
 	fi
 
 	if [ -n "$(echo ${_EXIT_SIG_LIST[@]} | grep $_sig)" ]
 	then
-		echo "$($_DATE_TIME_HINT): ${SCRIPT_NAME}: Script will exit soon." >&2
+		lzwarn "$($_DATE_TIME_HINT): ${SCRIPT_NAME}: Script will exit soon."
 		exit
 	fi
 }
@@ -226,7 +244,12 @@ env_var_push_back()
 #
 for i in ${_SIG_ITEMS[@]}
 do
-	trap "handle_signal $i handle_sig$i" $i
+	# TODO: SIGCHLD arises all the time, it's annoying.
+	#       Any idea of knowning if we're in a script or a terminal currently??
+	if [ "$i" != "CHLD" ]
+	then
+		trap "handle_signal $i handle_sig$i" $i
+	fi
 done
 
 #
