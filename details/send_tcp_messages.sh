@@ -12,7 +12,7 @@ handle_sigPIPE()
 	lzerror "Failed to send TCP message: $current_msg"
 }
 
-source $(dirname $0)/inner/_shell_common.sh
+source $LAZY_SCRIPT_HOME/details/shell_common.sh
 
 if [ $# -lt 2 ]
 then

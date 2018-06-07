@@ -20,6 +20,12 @@ do
 	mkdir -p "$i"
 done
 
+[ -d $__LAZY_SCRIPT_HOME__/details/shortcuts ] || mkdir -p $__LAZY_SCRIPT_HOME__/details/shortcuts
+find $__LAZY_SCRIPT_HOME__/details/ -name "*.sh" | while read i
+do
+	ln -s -f -n "$i" $__LAZY_SCRIPT_HOME__/details/shortcuts/$(basename "$i" .sh)
+done
+
 # Permits core file generation for programs
 ulimit -c unlimited
 

@@ -8,7 +8,7 @@ usage()
 	echo "Note: This script acts just like command 'which' or 'whereis', but does not support multiple arguments." >&2
 }
 
-source $(dirname $0)/inner/_shell_common.sh
+source $LAZY_SCRIPT_HOME/details/shell_common.sh
 
 echo $PATH | awk -F : '{ for (i = 1; i <= NF; i++) print $i }' | while read i
 do

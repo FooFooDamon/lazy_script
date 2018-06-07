@@ -7,7 +7,7 @@ usage()
 	echo "Example: $(basename $0) /home/foo/xx.sh /home/foo/yy.sh" >&2
 }
 
-source $(dirname $0)/inner/_shell_common.sh
+source $LAZY_SCRIPT_HOME/details/shell_common.sh
 
 for i in "$@"
 do

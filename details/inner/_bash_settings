@@ -36,12 +36,12 @@ _NECESSARY_DIRS=($HOME/bin \
 	$__LAZY_SCRIPT_HOME__/details/private \
 	$__LAZY_SCRIPT_HOME__/details/private/vim)
 
-env_var_push_front PATH $HOME/bin $__LAZY_SCRIPT_HOME__/details $__LAZY_SCRIPT_HOME__/details/private
+env_var_push_front PATH $HOME/bin $__LAZY_SCRIPT_HOME__/details $__LAZY_SCRIPT_HOME__/details/shortcuts $__LAZY_SCRIPT_HOME__/details/private
 
 env_var_push_front LD_LIBRARY_PATH $HOME/lib /usr/local/lib
 env_var_push_front PYTHONPATH $__LAZY_SCRIPT_HOME__/lib/customized_python_libraries
 
-alias sudo='sudo env LAZY_SCRIPT_HOME=$__LAZY_SCRIPT_HOME__ PATH=$PATH LD_LIBRARY_PATH=$LD_LIBRARY_PATH PYTHONPATH=$PYTHONPATH'
+alias sudo="sudo env LAZY_SCRIPT_HOME=$__LAZY_SCRIPT_HOME__ PATH=$PATH LD_LIBRARY_PATH=$LD_LIBRARY_PATH PYTHONPATH=$PYTHONPATH"
 
 export CPU_CORES=`cat /proc/cpuinfo | grep "processor" | wc -l`
 alias make="time make"
@@ -58,13 +58,12 @@ alias pst="ps -eLo ruser,pid,ppid,lwp,psr,args" # means displaying [t]hread info
 alias L="cd $__LAZY_SCRIPT_HOME__"
 alias LP="cd $__LAZY_SCRIPT_HOME__/details/private"
 alias dsk="cd $HOME/桌面 2> /dev/null || cd $HOME/Desktop"
-alias startx="echo \"startx should not be used when you have entered a graphic desktop\""
+alias startx="echo -e \"\\e[0;33mstartx should not be used when you have entered a graphic desktop\\e[0m\""
 alias soft_background_color="echo \"#CCE8CF(that is: Red[204]|Green[232]|Blue[207]), or #557BCC(that is: Red[85]|Green[123]|Blue[204])\""
 alias soft_bg_color=soft_background_color
 alias tabs_to_spaces="expand"
 alias tabs_to_4spaces="expand -t 4"
 alias clear_swapness="sync;sudo swapoff -a;sudo swapon -a"
-#alias retrieve_memory="sudo $__LAZY_SCRIPT_HOME__/details/retrieve_memory.sh"
 #alias rm=mv $* $HOME/Trash
 alias tl="script -f $HOME/logs/terminal_log_\`date +%Y-%m-%d_%H_%M_%S\`.txt"
 

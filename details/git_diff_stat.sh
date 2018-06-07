@@ -4,7 +4,7 @@ usage()
 	echo "Usage: $(basename $0)"
 }
 
-source $(dirname $0)/inner/_shell_common.sh
+source $LAZY_SCRIPT_HOME/details/shell_common.sh
 
 version_numbers=(`git log | grep ^commit | head -2 | awk '{ print $2 }'`)
 

@@ -7,7 +7,7 @@ usage()
 	echo "Example: $(basename $0) ./dir1 /home/foo/dir2" >&2
 }
 
-source $(dirname $0)/inner/_shell_common.sh
+source $LAZY_SCRIPT_HOME/details/shell_common.sh
 
 if [ $# -lt 1 ]
 then
