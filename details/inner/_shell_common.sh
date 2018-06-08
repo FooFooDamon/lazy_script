@@ -276,5 +276,11 @@ do
 		usage
 		exit 0
 	fi
+	
+	if (is_strictly_matched "$i" "-v" || is_strictly_matched "$i" "--version")
+	then
+		version
+		exit 0
+	fi
 done
 

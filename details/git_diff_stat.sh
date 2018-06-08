@@ -4,6 +4,11 @@ usage()
 	echo "Usage: $(basename $0)"
 }
 
+version()
+{
+	echo "$(basename $0): V1.00.00 2018/06/08"
+}
+
 source $LAZY_SCRIPT_HOME/details/shell_common.sh
 
 version_numbers=(`git log | grep ^commit | head -2 | awk '{ print $2 }'`)

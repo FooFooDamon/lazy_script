@@ -8,6 +8,11 @@ usage()
 	echo "Note: This script acts just like command 'which' or 'whereis', but does not support multiple arguments." >&2
 }
 
+version()
+{
+	echo "$(basename $0): V1.00.00 2018/06/08"
+}
+
 source $LAZY_SCRIPT_HOME/details/shell_common.sh
 
 echo $PATH | awk -F : '{ for (i = 1; i <= NF; i++) print $i }' | while read i

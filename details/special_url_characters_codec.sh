@@ -13,14 +13,16 @@ DATE_TIME_HINT="date +%Y-%m-%d_%H:%M:%S"
 
 usage()
 {
-	echo "$(basename $0) - <Simple descriptions about this script ...>" >&2
-	echo "Usage: $(basename $0) <Usage format of this script ...>" >&2
+	echo "$(basename $0) - Encodes/Decodes special URL characters" >&2
+	echo "Usage: $(basename $0) [ -d | -e ] <One or more raw or encoded URL strings> ..." >&2
+	echo "+++ -d: [D]ecodes the specified string(s). Default option if no option specified." >&2
+	echo "+++ -e: [E]ecodes the specified string(s)" >&2
 	echo "Examples: $(basename $0) <Usage examples of this script ...>" >&2
 }
 
 version()
 {
-	echo "$(basename $0): <Define the version number of your script here>"
+	echo "$(basename $0): V1.00.00 2018/06/08"
 }
 
 handle_sigHUP()
@@ -197,4 +199,36 @@ source $LAZY_SCRIPT_HOME/details/shell_common.sh || exit 1
 ### Put your contents below this comment block.
 ###
 ###############################################
+
+
+# NOTE: The "%" must be the first!
+ORIGINAL_CHARS=("%"   " "   "!"   \"    "#"   "&"   "("   ")"   "+"   ","   "/"   ":"   ";"   "<"   "="   ">"   "?"   "@"   \\    "|")
+ESCAPED_CHARS=( "%25" "%20" "%21" "%22" "%23" "%26" "%28" "%29" "%2B" "%2C" "%2F" "%3A" "%3B" "%3C" "%3D" "%3E" "%3F" "%40" "%5C" "%7C")
+
+if [ $# -eq 1 ]
+then
+	one_string_only=1
+else
+	one_string_only=0
+fi
+
+while [ $# -gt 0 ]
+do
+	original_string="$1"
+	escaped_string="$original_string"
+
+	for i in `seq 0 $((${#ORIGINAL_CHARS[*]} - 1))`
+	do
+		escaped_string=${escaped_string//"${ORIGINAL_CHARS[$i]}"/"${ESCAPED_CHARS[$i]}"}
+	done
+
+	if [ $one_string_only -eq 1 ]
+	then
+		echo "$escaped_string"
+	else
+		echo "[$original_string]  --->  [$escaped_string]"
+	fi
+
+	shift
+done
 

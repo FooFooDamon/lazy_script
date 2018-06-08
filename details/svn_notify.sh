@@ -7,6 +7,11 @@ usage()
 	echo "Example: $(basename $0) ./dir1 /home/foo/dir2" >&2
 }
 
+version()
+{
+	echo "$(basename $0): V1.00.00 2018/06/08"
+}
+
 source $LAZY_SCRIPT_HOME/details/shell_common.sh
 
 if [ $# -lt 1 ]

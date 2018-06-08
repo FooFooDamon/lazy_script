@@ -7,6 +7,11 @@ usage()
 	echo "Example: $(basename $0) 127.0.0.1:8888 \"Do you like programming?\" \"No, I don't like it at all!\"" >&2
 }
 
+version()
+{
+	echo "$(basename $0): V1.00.00 2018/06/08"
+}
+
 handle_sigPIPE()
 {
 	lzerror "Failed to send UDP message: $current_msg"
