@@ -1,3 +1,5 @@
+#!/bin/bash
+
 usage()
 {
 	echo "$(basename $0) - Retrieves unused memory" >&2

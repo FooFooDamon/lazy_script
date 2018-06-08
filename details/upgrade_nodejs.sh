@@ -1,3 +1,5 @@
+#!/bin/bash
+
 usage()
 {
 	echo "$(basename $0) - Upgrades NodeJS to the latest version." >&2

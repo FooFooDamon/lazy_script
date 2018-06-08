@@ -26,7 +26,7 @@ _DATE_TIME_HINT="date +%Y-%m-%d_%H:%M:%S"
 SCRIPT_NAME=$(basename "$0")
 SCRIPT_DIR=`cd $(dirname "$0") && pwd`
 
-_EXIT_SIG_LIST=(INT KILL TERM QUIT STOP)
+#_EXIT_SIG_LIST=(INT KILL TERM QUIT STOP)
 
 # TODO: Use 'kill -l' to fetch these items automatically!
 _SIG_ITEMS=(HUP INT QUIT ILL \
@@ -59,11 +59,6 @@ handle_signal()
 {
 	local _sig=$1
 
-	if [ "$_sig" != "CHLD" ]
-	then
-		lzwarn "$($_DATE_TIME_HINT): ${SCRIPT_NAME}: SIG$_sig captured"
-	fi
-
 	if [ -n "$2" ]
 	then
 		sig_handler=$2
@@ -75,11 +70,14 @@ handle_signal()
 		$sig_handler
 	fi
 
-	if [ -n "$(echo ${_EXIT_SIG_LIST[@]} | grep $_sig)" ]
-	then
-		lzwarn "$($_DATE_TIME_HINT): ${SCRIPT_NAME}: Script will exit soon."
-		exit
-	fi
+	#
+	# It's up to the user to decide whether to exit.
+	#
+	#if [ -n "$(echo ${_EXIT_SIG_LIST[@]} | grep $_sig)" ]
+	#then
+	#	lzwarn "$($_DATE_TIME_HINT): ${SCRIPT_NAME}: Script will exit soon."
+	#	exit
+	#fi
 }
 
 #
@@ -122,6 +120,18 @@ is_strictly_matched()
 is_case_insensitively_matched()
 {
 	[[ "`to_lower_case $1`" == "`to_lower_case $2`" ]] && return $LZ_TRUE || return $LZ_FALSE
+}
+
+str_contains()
+{
+	[[ -n "$2" ]] || return $LZ_FALSE
+	[[ `echo "$1" | grep "$2" -c` -gt 0 ]] && return $LZ_TRUE || return $LZ_FALSE
+}
+
+str_contains_case_insensitively()
+{
+	[[ -n "$2" ]] || return $LZ_FALSE
+	[[ `echo "$1" | grep -i "$2" -c` -gt 0 ]] && return $LZ_TRUE || return $LZ_FALSE
 }
 
 lzwarn()
