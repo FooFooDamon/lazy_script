@@ -14,15 +14,21 @@ DATE_TIME_HINT="date +%Y-%m-%d_%H:%M:%S"
 usage()
 {
 	echo "$(basename $0) - Encodes/Decodes special URL characters" >&2
-	echo "Usage: $(basename $0) [ -d | -e ] <One or more raw or encoded URL strings> ..." >&2
+	echo -e "\nUsage: $(basename $0) [ -d | -e ] <One or more raw or encoded URL strings> ..." >&2
 	echo "+++ -d: [D]ecodes the specified string(s). Default option if no option specified." >&2
 	echo "+++ -e: [E]ecodes the specified string(s)" >&2
-	echo "Examples: $(basename $0) <Usage examples of this script> ..." >&2
+	echo -e "\nExample 1: $(basename $0) -e \"https://www.google.com/\"" >&2
+	echo "  will get the result: http%3A%2F%2Fwww.google.com%2F" >&2
+	echo -e "\nExample 2: $(basename $0) \"https%3A%2F%2Fwww.google.com%2F\" \"https%3A%2F%2Fwww.baidu.com%2F\"" >&2
+	echo "  will get the result:" >&2
+	echo "[https%3A%2F%2Fwww.google.com%2F] -> [https://www.google.com/]" >&2
+	echo "[https%3A%2F%2Fwww.baidu.com%2F] -> [https://www.baidu.com/]" >&2
 }
 
 version()
 {
-	echo "$(basename $0): V1.00.00 2018/06/08"
+	echo "$(basename $0): V1.00.01 2018/06/10"
+	#echo "$(basename $0): V1.00.00 2018/06/08"
 }
 
 handle_sigHUP()
@@ -202,31 +208,52 @@ source $LAZY_SCRIPT_HOME/details/shell_common.sh || exit 1
 
 
 # NOTE: The "%" must be the first!
+# TODO: How to support Chinese characters?
 ORIGINAL_CHARS=("%"   " "   "!"   \"    "#"   "&"   "("   ")"   "+"   ","   "/"   ":"   ";"   "<"   "="   ">"   "?"   "@"   \\    "|")
-ESCAPED_CHARS=( "%25" "%20" "%21" "%22" "%23" "%26" "%28" "%29" "%2B" "%2C" "%2F" "%3A" "%3B" "%3C" "%3D" "%3E" "%3F" "%40" "%5C" "%7C")
+ENCODED_CHARS=( "%25" "%20" "%21" "%22" "%23" "%26" "%28" "%29" "%2B" "%2C" "%2F" "%3A" "%3B" "%3C" "%3D" "%3E" "%3F" "%40" "%5C" "%7C")
 
-if [ $# -eq 1 ]
-then
-	one_string_only=1
-else
-	one_string_only=0
-fi
+is_encode=0
+target_count=0
+
+for i in "$@"
+do
+	if [ "$i" = "-d" ]
+	then
+		is_encode=0
+	elif [ "$i" = "-e" ]
+	then
+		is_encode=1
+	else
+		target_count=$(($target_count + 1))
+	fi
+done
 
 while [ $# -gt 0 ]
 do
-	original_string="$1"
-	escaped_string="$original_string"
+	if [[ "$1" = "-d" || "$1" = "-e" ]]
+	then
+		shift
+		continue
+	fi
 
+	old_string="$1"
+	new_string="$old_string"
+		
 	for i in `seq 0 $((${#ORIGINAL_CHARS[*]} - 1))`
 	do
-		escaped_string=${escaped_string//"${ORIGINAL_CHARS[$i]}"/"${ESCAPED_CHARS[$i]}"}
+		if [ $is_encode -eq 1 ]
+		then
+			new_string=${new_string//"${ORIGINAL_CHARS[$i]}"/"${ENCODED_CHARS[$i]}"}
+		else
+			new_string=${new_string//"${ENCODED_CHARS[$i]}"/"${ORIGINAL_CHARS[$i]}"}
+		fi
 	done
 
-	if [ $one_string_only -eq 1 ]
+	if [ $target_count -le 1 ]
 	then
-		echo "$escaped_string"
+		echo "$new_string"
 	else
-		echo "[$original_string]  --->  [$escaped_string]"
+		echo "[$old_string] -> [$new_string]"
 	fi
 
 	shift
