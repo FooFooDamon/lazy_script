@@ -1,3 +1,5 @@
+#!/bin/bash
+
 #
 # _shell_common.sh
 #
@@ -26,8 +28,6 @@ _DATE_TIME_HINT="date +%Y-%m-%d_%H:%M:%S"
 SCRIPT_NAME=$(basename "$0")
 SCRIPT_DIR=`cd $(dirname "$0") && pwd`
 
-#_EXIT_SIG_LIST=(INT KILL TERM QUIT STOP)
-
 # TODO: Use 'kill -l' to fetch these items automatically!
 _SIG_ITEMS=(HUP INT QUIT ILL \
 	TRAP ABRT BUS FPE \
@@ -41,6 +41,8 @@ _SIG_ITEMS=(HUP INT QUIT ILL \
 LZ_TRUE=0
 LZ_FALSE=-1
 
+export LAZY_SCRIPT_HOME=$(cd "$(dirname $BASH_SOURCE)"/../.. && pwd)
+
 ###########################################################
 #####
 ##### Functions
@@ -50,56 +52,140 @@ LZ_FALSE=-1
 #####
 ###########################################################
 
-#
-# Usage: handle_signal <signal name> [signal handler]
-# Example: handle_signal INT sigint_warning
-# Note: Definition(usually exits as a function) of [signal handler] has to exists prior to this function.
-#
-handle_signal()
+_to_stderr()
 {
-	local _sig=$1
+	echo -e "$*" >&2
+}
 
-	if [ -n "$2" ]
-	then
-		sig_handler=$2
-		if [ "$_sig" != "CHLD" ]
-		then
-			lzwarn "$($_DATE_TIME_HINT): ${SCRIPT_NAME}: SIG$_sig captured"
-			lzwarn "$($_DATE_TIME_HINT): ${SCRIPT_NAME}: Signal handler [$sig_handler] is about to run."
-		fi
-		$sig_handler
-	fi
-
-	#
-	# It's up to the user to decide whether to exit.
-	#
-	#if [ -n "$(echo ${_EXIT_SIG_LIST[@]} | grep $_sig)" ]
-	#then
-	#	lzwarn "$($_DATE_TIME_HINT): ${SCRIPT_NAME}: Script will exit soon."
-	#	exit
-	#fi
+do_nothing()
+{
+	printf ""
 }
 
 #
-# Usage example:
+# Lists usage of all public functions and scripts.
 #
-# if (is_integer 123456)
-# then
-#     echo "It's an integer."
-# else
-#     echo "It's not an integer"
-# fi
+# TODO:
+#     1. More script types: .py, .pl, .exp, .js, etc. .
+#     2. Private functions and scripts.
+#     3. Checking that if a private script supports -h option.
+#     4. Tab completion.
+#     5. Smart hint.
 #
-# Or:
-#
-# (is_integer 123456) && echo "It's an integer" || echo "It's not an integer"
-#
-# Any functions returning true or false can be used like this.
-# Note that the parentheses are optional but recommended.
-#
+lzhelp()
+{
+	local _short_name=$(basename "$BASH_SOURCE" .sh)
+
+	grep "^[A-Za-z][A-Za-z0-9_]\{0,\}()" "$BASH_SOURCE" | sort | grep -v "lzhelp\|do_nothing" | sed "/()/s///g" > /tmp/lz_functions.txt
+	ls "$LAZY_SCRIPT_HOME"/details/shortcuts/ | grep -v ${_short_name/_/} > /tmp/lz_scripts.txt
+	echo ""
+
+	if [ $# -eq 0 ]
+	then
+		echo -e "################## Functions start ##################\n"
+		while read i
+		do
+			_USAGE_OF_$i 2>&1 | head -1
+			echo ""
+		done < /tmp/lz_functions.txt
+		echo -e "################## Functions end ##################\n"
+		
+		echo -e "################## Scripts start ##################\n"
+		while read i
+		do
+			#$i -h 2>&1 | head -1 # might cause crash, weird!!
+			$i -h 2>&1 | sed -n "1p"
+			echo ""
+		done < /tmp/lz_scripts.txt
+		echo -e "################## Scripts end ##################\n"
+	else
+		printf "" > /tmp/lz_functions_queried.txt
+		printf "" > /tmp/lz_scripts_queried.txt
+		for i in "$@"
+		do
+			if [ `grep "^${i}$" /tmp/lz_functions.txt -c` -gt 0 ]
+			then
+				[ $# -gt 1 ] && printf "[Function start] " || printf "[Function] "
+				#[ $# -le 5 ] && _USAGE_OF_$i 2>&1 || _USAGE_OF_$i 2>&1 | head -1
+				_USAGE_OF_$i 2>&1
+				[ $# -gt 1 ] && echo -e "[Function end] -------- $i --------"
+				sed -i "/^${i}$/d" /tmp/lz_functions.txt
+				echo "$i" >> /tmp/lz_functions_queried.txt
+			elif [ `grep "^${i}$" /tmp/lz_scripts.txt -c` -gt 0 ]
+			then
+				[ $# -gt 1 ] && printf "[Script start] " || printf "[Script] "
+				$i -h 2>&1
+				[ $# -gt 1 ] && echo -e "[Script end] -------- $i --------"
+				sed -i "/^${i}$/d" /tmp/lz_scripts.txt
+				echo "$i" >> /tmp/lz_scripts_queried.txt
+			elif [[ `grep "^${i}$" /tmp/lz_functions_queried.txt -c` -gt 0 || `grep "^${i}$" /tmp/lz_scripts_queried.txt -c` -gt 0 ]]
+			then
+				do_nothing # It's repeated item.
+			else
+				lzwarn "Not a Function or script: $i"
+			fi
+			echo ""
+		done
+	fi
+
+}
+
+_USAGE_OF_lzwarn()
+{
+	local _target_func=${FUNCNAME[0]/_USAGE_OF_/}
+	_to_stderr "$_target_func - Prints colorful warning messages"
+	_to_stderr "Usage: $_target_func <message 1> <message 2> ..."
+	_to_stderr "Example: $_target_func \"Warning fragment 1\" \"Warning fragment 2\" \"Warning fragment 3\""
+}
+
+lzwarn()
+{
+	_to_stderr "\e[0;33m$*\e[0m"
+}
+
+_USAGE_OF_lzerror()
+{
+	local _target_func=${FUNCNAME[0]/_USAGE_OF_/}
+	_to_stderr "$_target_func - Prints colorful error messages"
+	_to_stderr "Usage: $_target_func <message 1> <message 2> ..."
+	_to_stderr "Example: $_target_func \"Error fragment 1\" \"Error fragment 2\" \"Error fragment 3\""
+}
+
+lzerror()
+{
+	_to_stderr "\e[0;31m$*\e[0m"
+}
+
+_USAGE_OF_is_integer()
+{
+	local _target_func=${FUNCNAME[0]/_USAGE_OF_/}
+	_to_stderr "$_target_func - Checks if a string is an integer."
+	_to_stderr "\nUsage: $_target_func <string to check>"
+	_to_stderr "  And it will return $LZ_TRUE if the string is an integer, or $LZ_FALSE otherwise."
+	_to_stderr "\nExample 1:"
+	_to_stderr "if ($_target_func 123456)"
+	_to_stderr "then"
+	_to_stderr "    echo \"It's an integer.\""
+	_to_stderr "else"
+	_to_stderr "    echo \"It's not an integer.\""
+	_to_stderr "fi"
+	_to_stderr "\nExample 2:"
+	_to_stderr "($_target_func 123456) && echo \"It's an integer\" || echo \"It's not an integer\""
+	_to_stderr "\nNote that the parentheses are optional but recommended.\n"
+}
+
 is_integer()
 {
 	[[ $1 == *[!0-9+\-]* ]] && return $LZ_TRUE || return $LZ_FALSE
+}
+
+_USAGE_OF_to_lower_case()
+{
+	local _target_func=${FUNCNAME[0]/_USAGE_OF_/}
+	_to_stderr "$_target_func - Converts all letters into lower case ones."
+	_to_stderr "Usage: $_target_func <string 1> <string 2> ..."
+	_to_stderr "Example: $_target_func \"China is 中国\" \"America is 美国\""
+	_to_stderr "  will get the result: china is 中国 america is 美国"
 }
 
 to_lower_case()
@@ -107,41 +193,62 @@ to_lower_case()
 	echo $* | tr 'A-Z' 'a-z'
 }
 
+_USAGE_OF_to_upper_case()
+{
+	local _target_func=${FUNCNAME[0]/_USAGE_OF_/}
+	_to_stderr "$_target_func - Converts all letters into upper case ones."
+	_to_stderr "Usage: $_target_func <string 1> <string 2> ..."
+	_to_stderr "Example: $_target_func \"China is 中国\" \"America is 美国\""
+	_to_stderr "  will get the result: CHINA IS 中国 AMERICA IS 美国"
+}
+
 to_upper_case()
 {
 	echo $* | tr 'a-z' 'A-Z'
 }
 
-is_strictly_matched()
+_USAGE_OF_quit_if_no_args()
 {
-	[[ "$1" == "$2" ]] && return $LZ_TRUE || return $LZ_FALSE
+	local _target_func=${FUNCNAME[0]/_USAGE_OF_/}
+	_to_stderr "$_target_func - Causes the whole script to quit if the calling function or script accepts no arguments."
+	_to_stderr "Usage: $_target_func"
 }
 
-is_case_insensitively_matched()
+quit_if_no_args()
 {
-	[[ "`to_lower_case $1`" == "`to_lower_case $2`" ]] && return $LZ_TRUE || return $LZ_FALSE
+	[ $# -gt 0 ] || exit 1
 }
 
-str_contains()
+alias return_false_if_no_args="[ $# -gt 0 ] || return $LZ_FALSE"
+
+_USAGE_OF_register_signal()
 {
-	[[ -n "$2" ]] || return $LZ_FALSE
-	[[ `echo "$1" | grep "$2" -c` -gt 0 ]] && return $LZ_TRUE || return $LZ_FALSE
+	local _target_func=${FUNCNAME[0]/_USAGE_OF_/}
+	_to_stderr "$_target_func - Registers a specified signal."
+	_to_stderr "Usage: $_target_func <signal name>"
+	_to_stderr "Example: $_target_func INT"
+	_to_stderr "  Then handle_sigINT will be called when signal INT arises."
 }
 
-str_contains_case_insensitively()
+register_signal()
 {
-	[[ -n "$2" ]] || return $LZ_FALSE
-	[[ `echo "$1" | grep -i "$2" -c` -gt 0 ]] && return $LZ_TRUE || return $LZ_FALSE
+	return_false_if_no_args
+
+	if [ "$0" = "bash" ]
+	then
+		do_nothing
+	else
+		#trap "[ \"$1\" != \"CHLD\" ] && lzwarn \"\$($_DATE_TIME_HINT): ${SCRIPT_NAME}: SIG$1 captured, signal handler [handle_sig$1] is about to run.\"; handle_sig$1" $1
+		trap "lzwarn \"\$($_DATE_TIME_HINT): ${SCRIPT_NAME}: SIG$1 captured, signal handler [handle_sig$1] is about to run.\"; handle_sig$1" $1
+	fi
 }
 
-lzwarn()
+_USAGE_OF_oops_quit()
 {
-	echo -e "\e[0;33m$*\e[0m" >&2
-}
-
-lzerror()
-{
-	echo -e "\e[0;31m$*\e[0m" >&2
+	local _target_func=${FUNCNAME[0]/_USAGE_OF_/}
+	_to_stderr "$_target_func - Causes the whole script to quit with Oops complaint."
+	_to_stderr "Usage: $_target_func <something you want to complain about>"
+	_to_stderr "Example: $_target_func cmake not installed"
 }
 
 oops_quit()
@@ -150,6 +257,14 @@ oops_quit()
 	exit 1
 }
 
+_USAGE_OF_count_down_quit()
+{
+	local _target_func=${FUNCNAME[0]/_USAGE_OF_/}
+	_to_stderr "$_target_func - Causes the whole script to quit after a count-down."
+	_to_stderr "Usage: $_target_func"
+}
+
+# TODO: Can we customize the time and the exit code?
 count_down_quit()
 {
 	printf "*** Script going to exit:" >&2
@@ -161,19 +276,60 @@ count_down_quit()
 	exit
 }
 
+_USAGE_OF_is_installed()
+{
+	local _target_func=${FUNCNAME[0]/_USAGE_OF_/}
+	_to_stderr "$_target_func - Checks if a program has been installed."
+	_to_stderr "\nUsage: $_target_func <program to check>"
+	_to_stderr "  And it will return $LZ_TRUE if the program has been installed, or $LZ_FALSE otherwise."
+	_to_stderr "\nExample 1:"
+	_to_stderr "if ($_target_func cmake)"
+	_to_stderr "then"
+	_to_stderr "    echo \"cmake installed.\""
+	_to_stderr "else"
+	_to_stderr "    echo \"cmake not installed.\""
+	_to_stderr "fi"
+	_to_stderr "\nExample 2:"
+	_to_stderr "($_target_func cmake) && echo \"cmake installed\" || echo \"cmake not installed\""
+	_to_stderr "\nNote that the parentheses are optional but recommended.\n"
+}
+
 is_installed()
 {
 	[ -n "`which \"$1\"`" ] && return $LZ_TRUE || return $LZ_FALSE
 }
 
+_USAGE_OF_quit_if_not_installed()
+{
+	local _target_func=${FUNCNAME[0]/_USAGE_OF_/}
+	_to_stderr "$_target_func - Causes the whole script to quit if the specified program is not installed."
+	_to_stderr "Usage: $_target_func <program to check>"
+	_to_stderr "Example: $_target_func cmake"
+}
+
 quit_if_not_installed()
 {
-	is_installed "$1" || oops_quit "Command not installed: $1\nPlease intall it first!"
+	is_installed "$1" || oops_quit "Program not installed: $1\nPlease intall it first!"
+}
+
+_USAGE_OF_warn_if_not_installed()
+{
+	local _target_func=${FUNCNAME[0]/_USAGE_OF_/}
+	_to_stderr "$_target_func - Prints warnings if the specified program is not installed."
+	_to_stderr "Usage: $_target_func <program to check>"
+	_to_stderr "Example: $_target_func cmake"
 }
 
 warn_if_not_installed()
 {
-	is_installed "$1" || lzwarn "*** Command not installed: $1\nPlease intall it first!"
+	is_installed "$1" || lzwarn "*** Program not installed: $1\nPlease intall it first!"
+}
+
+_USAGE_OF_quit_if_not_root()
+{
+	local _target_func=${FUNCNAME[0]/_USAGE_OF_/}
+	_to_stderr "$_target_func - Causes the whole script to quit if the current script executor is not root user or does not use \"sudo\"."
+	_to_stderr "Usage: $_target_func"
 }
 
 quit_if_not_root()
@@ -185,16 +341,16 @@ quit_if_not_root()
 	fi
 }
 
-env_var_push()
+_env_var_push()
 {
 	if [ $# -lt 3 ]
 	then
-		echo "Usage: $FUNCNAME --head | --tail <environment variable name>"\
-			" <environment variable value 1> <environment variable value 2> ..." >&2
-		echo "Examples:" >&2
-		echo "    1) \"$FUNCNAME --head PATH /path1\" equals to \"export PATH=/path1:\$PATH\"" >&2
-		echo "    2) \"$FUNCNAME --tail PATH /path_without_spaces \"/path with spaces\"\" equals to"\
-			" \"export PATH=\$PATH:/path_without_spaces:\"/path with spaces\"\"" >&2
+		_to_stderr "Usage: $FUNCNAME --head | --tail <environment variable name>"\
+			" <environment variable value 1> <environment variable value 2> ..."
+		_to_stderr "Examples:"
+		_to_stderr "    1) \"$FUNCNAME --head PATH /path1\" equals to \"export PATH=/path1:\$PATH\""
+		_to_stderr "    2) \"$FUNCNAME --tail PATH /path_without_spaces \"/path with spaces\"\" equals to"\
+			" \"export PATH=\$PATH:/path_without_spaces:\"/path with spaces\"\""
 		return $LZ_FALSE
 	fi
 
@@ -232,14 +388,34 @@ env_var_push()
 	done
 }
 
+_USAGE_OF_env_var_push_front()
+{
+	local _target_func=${FUNCNAME[0]/_USAGE_OF_/}
+	_to_stderr "$_target_func - Pushes new values into the front of the specified environment variable."
+	_to_stderr "Usage: $_target_func <environment variable name> <value 1> <value 2> ..."
+	_to_stderr "Example: $_target_func PATH /home/foo/bin /usr/local/bin"
+	_to_stderr "  will get the result: /usr/local/bin:/home/foo/bin:<Old PATH value>"
+	_to_stderr "Note: This function is able to check the null variable and repeated value items."
+}
+
 env_var_push_front()
 {
-	env_var_push --head $*
+	_env_var_push --head $*
+}
+
+_USAGE_OF_env_var_push_back()
+{
+	local _target_func=${FUNCNAME[0]/_USAGE_OF_/}
+	_to_stderr "$_target_func - Pushes new values into the end of the specified environment variable."
+	_to_stderr "Usage: $_target_func <environment variable name> <value 1> <value 2> ..."
+	_to_stderr "Example: $_target_func PATH /home/foo/bin /usr/local/bin"
+	_to_stderr "  will get the result: <Old PATH value>:/home/foo/bin:/usr/local/bin"
+	_to_stderr "Note: This function is able to check the null variable and repeated value items."
 }
 
 env_var_push_back()
 {
-	env_var_push --tail $*
+	_env_var_push --tail $*
 }
 
 
@@ -249,17 +425,21 @@ env_var_push_back()
 #####
 ###########################################################
 
+if [ "$BASH_SOURCE" = "$0" ]
+then
+	lzerror "*** $(basename $BASH_SOURCE) can not be executed directly! Use it as below:"
+	_to_stderr "    . \"$BASH_SOURCE\""
+	_to_stderr "or:"
+	_to_stderr "    source \"$BASH_SOURCE\""
+	exit 1
+fi
+
 #
 # Registers signals.
 #
 for i in ${_SIG_ITEMS[@]}
 do
-	# TODO: SIGCHLD arises all the time, it's annoying.
-	#       Any idea of knowning if we're in a script or a terminal currently??
-	if [ "$i" != "CHLD" ]
-	then
-		trap "handle_signal $i handle_sig$i" $i
-	fi
+	register_signal $i
 done
 
 #
@@ -271,13 +451,13 @@ done
 #
 for i in "$@"
 do
-	if (is_strictly_matched "$i" "-h" || is_strictly_matched "$i" "--help")
+	if [[ "$i" = "-h" || "$i" = "--help" ]]
 	then
 		usage
 		exit 0
 	fi
 	
-	if (is_strictly_matched "$i" "-v" || is_strictly_matched "$i" "--version")
+	if [[ "$i" = "-v" || "$i" = "--version" ]]
 	then
 		version
 		exit 0

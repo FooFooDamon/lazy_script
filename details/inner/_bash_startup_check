@@ -1,3 +1,5 @@
+#!/bin/bash
+
 #
 # _bash_startup_check.sh
 #
@@ -9,6 +11,29 @@
 #
 #       Usage: This script should be used by inner modules only.
 #
+
+if [ ! -f /bin/bash ]
+then
+	if [ -z "`which bash`" ]
+	then
+		lzerror "*** Bash not installed, please install it first!"
+	else
+		lzwarn "Bash not in the default directory, please execute command below manually to fix it:"
+		lzwarn "sudo ln -s -f -n `which bash` /bin/bash"
+	fi
+fi
+
+if [ ! -f /usr/bin/env ]
+then
+	if [ -z "`which env`" ]
+	then
+		lzerror "*** Program not installed: env"
+		lzwarn "Please install it first!"
+	else
+		lzwarn "env not in the default directory, please execute command below manually to fix it:"
+		lzwarn "sudo ln -s -f -n `which env` /usr/bin/env"
+	fi
+fi
 
 for i in ${_NECESSARY_TOOLS[@]}
 do

@@ -1,3 +1,5 @@
+#!/bin/bash
+
 #
 # _bash_welcome.sh
 #
@@ -34,7 +36,8 @@ for ((i = 0; i < $_EXPECTED_COLUMNS; i++)); do printf "#"; done
 echo ""
 echo "Several tips:"
 echo "1. Recommended terminal width: $RECOMMENDED_COLUMNS characters or above"
-echo "2. If you want to record your operations in terminal, just run \"tl\" manually."
-echo "3. For detailed usage of a specific Lazy-script, just run \"<target script name> -h\" to get it."
+echo "2. To record your operations in terminal, run: tl"
+echo "3. To view all public functions and scripts, run: lzhelp"
+echo "4. To see detailed usage of one or more function(s) or script(s), run: lzhelp <name 1> <name 2> ..."
 echo "Enjoy!"
 

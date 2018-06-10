@@ -1,2 +1,2 @@
-$(dirname $0)/install_lazy_script.sh remove
+bash $(dirname $0)/install_lazy_script.sh remove
 

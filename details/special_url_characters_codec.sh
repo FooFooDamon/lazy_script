@@ -17,7 +17,7 @@ usage()
 	echo "Usage: $(basename $0) [ -d | -e ] <One or more raw or encoded URL strings> ..." >&2
 	echo "+++ -d: [D]ecodes the specified string(s). Default option if no option specified." >&2
 	echo "+++ -e: [E]ecodes the specified string(s)" >&2
-	echo "Examples: $(basename $0) <Usage examples of this script ...>" >&2
+	echo "Examples: $(basename $0) <Usage examples of this script> ..." >&2
 }
 
 version()

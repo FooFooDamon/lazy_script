@@ -1,3 +1,5 @@
+#!/bin/bash
+
 #
 # _bash_identity.sh
 #
@@ -10,10 +12,19 @@
 #       Usage: This script should be used by inner modules only.
 #
 
-#export LAZY_SCRIPT_HOME=`cd $SCRIPT_DIR && pwd`
-export LAZY_SCRIPT_HOME=$__LAZY_SCRIPT_HOME__
+if [ "$BASH_SOURCE" = "$0" ]
+then
+	echo -e "\e[0;31m*** $(basename $BASH_SOURCE) can not be executed directly! Use it as below:\e[0m" >&2
+	echo "    . \"$BASH_SOURCE\"" >&2
+	echo "or:" >&2
+	echo "    source \"$BASH_SOURCE\"" >&2
+	exit 1
+fi
 
-if (is_case_insensitively_matched "`uname -o`" "Cygwin")
+#export LAZY_SCRIPT_HOME=$__LAZY_SCRIPT_HOME__
+export LAZY_SCRIPT_HOME=$(cd "$(dirname $BASH_SOURCE)"/../.. && pwd)
+
+if [ `uname -o | grep -i "Cygwin" -c` -gt 0 ]
 then
 	export OS_NAME=Cygwin
 	export OS_FULL_VERSION="1.0" # TODO: use uname?

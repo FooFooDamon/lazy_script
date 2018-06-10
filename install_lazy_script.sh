@@ -1,3 +1,5 @@
+#!/bin/bash
+
 BASH_PROFILE_CANDIDATES=("$HOME/.bashrc" "$HOME/.bash_profile" "$HOME/.profile" "$HOME/.bash_login")
 
 for i in ${BASH_PROFILE_CANDIDATES[*]}
@@ -61,7 +63,7 @@ else
 	source $__LAZY_SCRIPT_HOME__/details/inner/_shell_common.sh
 	source $__LAZY_SCRIPT_HOME__/details/inner/_bash_identity
 	source $__LAZY_SCRIPT_HOME__/details/inner/_bash_settings
-	[ -f $bash_profile ] && sed -i "/__LAZY_SCRIPT_HOME__/d" $bash_profile
+	[ -f $bash_profile ] && sed -i "/LAZY_SCRIPT_HOME/d" $bash_profile
 	[ -f $VIMRC ] && sed -i "/LAZY_SCRIPT_HOME/d" $VIMRC
 	echo "Lazy-script: Congratulations, you've get rid of me ~ ~ ~" >&2
 	echo "You can manually remove these programs if you don't need them: ${_NECESSARY_TOOLS[@]}" >&2

@@ -1,3 +1,5 @@
+#!/bin/bash
+
 #
 # _bash_settings.sh
 #
@@ -15,6 +17,15 @@
 ### Generally settings
 ###
 ###############################################
+
+if [ "$BASH_SOURCE" = "$0" ]
+then
+	echo -e "\e[0;31m*** $(basename $BASH_SOURCE) can not be executed directly! Use it as below:\e[0m" >&2
+	echo "    . \"$BASH_SOURCE\"" >&2
+	echo "or:" >&2
+	echo "    source \"$BASH_SOURCE\"" >&2
+	exit 1
+fi
 
 export SHELL="`which bash`"
 
@@ -74,15 +85,15 @@ alias tl="script -f $HOME/logs/terminal_log_\`date +%Y-%m-%d_%H_%M_%S\`.txt"
 ###############################################
 
 # TODO: more platforms and more settings.
-if (is_case_insensitively_matched $OS_NAME "Ubuntu")
+if [ "`to_lower_case $OS_NAME`" = "ubuntu" ]
 then
 	export PROG_INSTALL="apt install"
 	VIMRC=$HOME/.vimrc
-elif (is_case_insensitively_matched $OS_NAME "Darwin")
+elif [ "`to_lower_case $OS_NAME`" = "darwin" ]
 then
 	export PROG_INSTALL="brew install"
 	VIMRC=$HOME/.vimrc
-elif (is_case_insensitively_matched $OS_NAME "Cygwin")
+elif [ "`to_lower_case $OS_NAME`" = "cygwin" ]
 then
 	export PROG_INSTALL="unknown_install"
 	VIMRC=$HOME/_vimrc

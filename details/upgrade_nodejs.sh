@@ -11,8 +11,7 @@ version()
 	echo "$(basename $0): V1.00.00 2018/06/08"
 }
 
-export __LAZY_SCRIPT_HOME__=$(dirname $0)/..
-source $__LAZY_SCRIPT_HOME__/import_lazy_script.sh
+source "$LAZY_SCRIPT_HOME"/import_lazy_script.sh
 
 is_installed || sudo $PROG_INSTALL npm
 

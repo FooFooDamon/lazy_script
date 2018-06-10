@@ -33,7 +33,7 @@ A script box for lazy guys. Script types include but are not limited to `Shell`,
 Enter root directory of this script box, run:
 
 ```
-chmod 777 install_lazy_script.sh && ./install_lazy_script.sh
+bash install_lazy_script.sh
 ```
 
 即可进行安装。若要卸载，则执行：
@@ -41,16 +41,16 @@ chmod 777 install_lazy_script.sh && ./install_lazy_script.sh
 the installation will start. If you want to uninstall it, run:
 
 ```
-chmod 777 uninstall_lazy_script.sh && ./uninstall_lazy_script.sh
+bash uninstall_lazy_script.sh
 ```
 
 ## 用法 | Usage
 
-安装成功后，即可在终端使用工具箱里的脚本、函数、变量等，且可扩展，只需在`details/private`及其子目录放入用户自定义的脚本文件，即可增加自己所需的新功能。
+安装成功后，即可在终端使用工具箱里的脚本、函数、变量等，且可扩展，只需在`$LAZY_SCRIPT_HOME/details/private`及其子目录放入用户自定义的脚本文件，即可增加自己所需的新功能。
 
-Scripts, functions, variables and other things can be used on terminal after successful installation. Besides, this script box is extendible, just put your own stuff in `details/private` directory and its subdirectories and you can add your own functionalities.
+Scripts, functions, variables and other things can be used on terminal after successful installation. Besides, this script box is extendible, just put your own stuff in `$LAZY_SCRIPT_HOME/details/private` directory and its subdirectories and you can add your own functionalities.
 
-***注意***：安装完成后，***要手动启动一个终端完成初始化！***
+***注意***：***请务必确保`bash`或其软／硬链接位于 /bin 目录下！*** 安装完成后，***要手动启动一个终端完成初始化！***
 
-***NOTE***: After installation, you have to ***start a terminal manually to initialize this script box!***
+***NOTE***: ***Please make sure the `bash` program or its soft / hard link is in /bin directory!*** After installation, you have to ***start a terminal manually to initialize this script box!***
 

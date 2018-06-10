@@ -31,14 +31,14 @@ handle_sigHUP()
 handle_sigINT()
 {
 	echo "TODO: Define what to do here when SIGINT arises."
-	lzwarn "$($DATE_TIME_HINT): ${SCRIPT_NAME}: Script will exit soon."
+	lzwarn "\$($DATE_TIME_HINT): ${SCRIPT_NAME}: Script will exit soon."
 	exit
 }
 
 handle_sigQUIT()
 {
 	echo "TODO: Define what to do here when SIGQUIT arises."
-	lzwarn "$($DATE_TIME_HINT): ${SCRIPT_NAME}: Script will exit soon."
+	lzwarn "\$($DATE_TIME_HINT): ${SCRIPT_NAME}: Script will exit soon."
 	exit
 }
 
@@ -55,7 +55,7 @@ handle_sigTRAP()
 handle_sigABRT()
 {
 	echo "TODO: Define what to do here when SIGABRT arises."
-	lzwarn "$($DATE_TIME_HINT): ${SCRIPT_NAME}: Script will exit soon."
+	lzwarn "\$($DATE_TIME_HINT): ${SCRIPT_NAME}: Script will exit soon."
 	exit
 }
 
@@ -72,7 +72,7 @@ handle_sigFPE()
 handle_sigKILL()
 {
 	echo "TODO: Define what to do here when SIGKILL arises."
-	lzwarn "$($DATE_TIME_HINT): ${SCRIPT_NAME}: Script will exit soon."
+	lzwarn "\$($DATE_TIME_HINT): ${SCRIPT_NAME}: Script will exit soon."
 	exit
 }
 
@@ -104,7 +104,7 @@ handle_sigALRM()
 handle_sigTERM()
 {
 	echo "TODO: Define what to do here when SIGTERM arises."
-	lzwarn "$($DATE_TIME_HINT): ${SCRIPT_NAME}: Script will exit soon."
+	lzwarn "\$($DATE_TIME_HINT): ${SCRIPT_NAME}: Script will exit soon."
 	exit
 }
 
@@ -115,7 +115,9 @@ handle_sigSTKFLT()
 
 handle_sigCHLD()
 {
-	echo "TODO: Define what to do here when SIGCHLD arises."
+	# TODO: This is the default and general handling for SIGCHLD,
+	#       you can comment it and define your own specific operations if necessary.
+	do_nothing
 }
 
 handle_sigCONT()
@@ -126,7 +128,7 @@ handle_sigCONT()
 handle_sigSTOP()
 {
 	echo "TODO: Define what to do here when SIGSTOP arises."
-	lzwarn "$($DATE_TIME_HINT): ${SCRIPT_NAME}: Script will exit soon."
+	lzwarn "\$($DATE_TIME_HINT): ${SCRIPT_NAME}: Script will exit soon."
 	exit
 }
 
