@@ -1,0 +1,16 @@
+test_tab_completion_func()
+{
+	COMPREPLY=()
+	local _cur="${COMP_WORDS[COMP_CWORD]}"
+	local _prev="${COMP_WORDS[COMP_CWORD-1]}"
+	local _opts="help usage version"
+
+	if [[ ${_cur} == * ]]
+	then
+		COMPREPLY=( $(compgen -W "${_opts}" -- ${_cur}) )
+		return 0
+	fi
+}
+
+complete -F test_tab_completion_func test_tab_completion.sh
+

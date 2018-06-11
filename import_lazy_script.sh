@@ -43,5 +43,6 @@ quit_if_not_installed bash
 if [ "$1" == "-a" ]
 then
 	. "$__LAZY_SCRIPT_HOME__"/details/inner/_bash_welcome
+	. "$__LAZY_SCRIPT_HOME__"/details/inner/_bash_completion
 fi
 
