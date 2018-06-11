@@ -39,6 +39,6 @@ echo "1. Recommended terminal width: $RECOMMENDED_COLUMNS characters or above"
 echo "2. To record your operations in terminal, run: tl"
 echo "3. To view all public functions and scripts, run: lzhelp"
 echo "4. To see detailed usage of one or more function(s) or script(s), run: lzhelp <name 1> <name 2> ..."
-echo "   Luckly, tab completion is available for lzhelp, just try it!"
+echo "   Luckly, lzhelp supports tab completion, just try it!"
 echo "Enjoy!"
 

@@ -68,5 +68,6 @@ else
 	echo "Lazy-script: Congratulations, you've get rid of me ~ ~ ~" >&2
 	echo "You can manually remove these programs if you don't need them: ${_NECESSARY_TOOLS[@]}" >&2
 	echo "And these directories: ${_NECESSARY_DIRS[@]}" >&2
+	echo -e "Lazy-script: You \e[0;33mwon't see me again on next terminal\e[0m, bye! ~ ~ ~" >&2
 fi
 
