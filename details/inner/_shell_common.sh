@@ -15,6 +15,15 @@
 #              using 'source' or '.' syntax.
 #
 
+if [ "$BASH_SOURCE" = "$0" ]
+then
+	echo -e "\e[0;31m*** $(basename $BASH_SOURCE) can not be executed directly!\e[0m Use it as below:" >&2
+	echo "    . \"$BASH_SOURCE\"" >&2
+	echo "or:" >&2
+	echo "    source \"$BASH_SOURCE\"" >&2
+	exit 1
+fi
+
 shopt -s expand_aliases
 
 ###########################################################
@@ -25,8 +34,10 @@ shopt -s expand_aliases
 
 _DATE_TIME_HINT="date +%Y-%m-%d_%H:%M:%S"
 
-SCRIPT_NAME=$(basename "$0")
-SCRIPT_DIR=`cd $(dirname "$0") && pwd`
+export SHELL="`which bash`"
+
+export SCRIPT_NAME=$(basename "$0")
+export SCRIPT_DIR=`cd $(dirname "$0") && pwd`
 
 # TODO: Use 'kill -l' to fetch these items automatically!
 _SIG_ITEMS=(HUP INT QUIT ILL \
@@ -38,10 +49,20 @@ _SIG_ITEMS=(HUP INT QUIT ILL \
 	XFSZ VTALRM PROF WINCH \
 	IO PWR SYS)
 
-LZ_TRUE=0
-LZ_FALSE=-1
+export LZ_TRUE=0
+export LZ_FALSE=-1
 
-export LAZY_SCRIPT_HOME=$(cd "$(dirname $BASH_SOURCE)"/../.. && pwd)
+if [ `echo $BASH_SOURCE | grep inner -c` -gt 0 ]
+then
+	export LAZY_SCRIPT_HOME=$(cd "$(dirname $BASH_SOURCE)"/../.. && pwd)
+else
+	export LAZY_SCRIPT_HOME=$(cd "$(dirname $BASH_SOURCE)"/.. && pwd)
+fi
+
+_LZ_COMMON_SCRIPT_BASE_NAME=$(basename "$BASH_SOURCE" .sh)
+
+export LZ_PUBLIC_FUNCTIONS=(`grep "^[A-Za-z][A-Za-z0-9_]\{0,\}()" "$BASH_SOURCE" | sort | grep -v "lzhelp\|do_nothing" | sed "/()/s///g"`)
+export LZ_PUBLIC_SCRIPT_BASE_NAMES=(`ls "$LAZY_SCRIPT_HOME"/details/shortcuts/ | grep -v ${_LZ_COMMON_SCRIPT_BASE_NAME/_/}`)
 
 ###########################################################
 #####
@@ -73,10 +94,8 @@ do_nothing()
 #
 lzhelp()
 {
-	local _short_name=$(basename "$BASH_SOURCE" .sh)
-
-	grep "^[A-Za-z][A-Za-z0-9_]\{0,\}()" "$BASH_SOURCE" | sort | grep -v "lzhelp\|do_nothing" | sed "/()/s///g" > /tmp/lz_functions.txt
-	ls "$LAZY_SCRIPT_HOME"/details/shortcuts/ | grep -v ${_short_name/_/} > /tmp/lz_scripts.txt
+	echo "${LZ_PUBLIC_FUNCTIONS[*]}" | sed "/ /s//\n/g" > /tmp/lz_functions.txt
+	echo "${LZ_PUBLIC_SCRIPT_BASE_NAMES[*]}" | sed "/ /s//\n/g" > /tmp/lz_scripts.txt
 	echo ""
 
 	if [ $# -eq 0 ]
@@ -444,15 +463,6 @@ add_tab_completion()
 ##### Prerequisite operations
 #####
 ###########################################################
-
-if [ "$BASH_SOURCE" = "$0" ]
-then
-	lzerror "*** $(basename $BASH_SOURCE) can not be executed directly! Use it as below:"
-	_to_stderr "    . \"$BASH_SOURCE\""
-	_to_stderr "or:"
-	_to_stderr "    source \"$BASH_SOURCE\""
-	exit 1
-fi
 
 #
 # Registers signals.

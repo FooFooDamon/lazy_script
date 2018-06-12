@@ -27,8 +27,6 @@ then
 	exit 1
 fi
 
-export SHELL="`which bash`"
-
 # Terminal prompt
 export PS1="\[\e]0;\u@\h: \W\a\]${debian_chroot:+($debian_chroot)}[\u@\h \W]\$ "
 

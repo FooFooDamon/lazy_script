@@ -75,7 +75,7 @@ _PRIVATE_BASHRC_FILES=(_bash_private_settings \
 
 _PRIVATE_BASHRC_HINTS=("# Customize your variables, aliases and functions here.\n\n# export xx_var=xx\n\n# alias xx_alias=xx\n\n# xx_func()\n# {\n#\txx\n# }\n" \
 	"# Customize your operations on startup here.\n\n# xx_command\n" \
-	"# Customize your tab completions here.\n\n# complete -W \"xx_command\" \"tab completion word list for xx_command\"\n\n# add_tab_completion yy_command \"tab completion word list for yy_command\"\n")
+	"# Customize your tab completions here.\n\n# complete -W \"tab completion word list for xx_command\" \"xx_command\"\n\n# add_tab_completion yy_command \"tab completion word list for yy_command\"\n")
 
 _PRIVATE_BASHRC_COUNT=${#_PRIVATE_BASHRC_FILES[*]}
 
