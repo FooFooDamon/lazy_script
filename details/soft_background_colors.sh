@@ -19,7 +19,7 @@ usage()
 
 version()
 {
-	echo "$(basename $0): <Define the version number of your script here>"
+	echo "$(basename $0): V1.00.00 2018/06/11"
 }
 
 handle_sigHUP()
