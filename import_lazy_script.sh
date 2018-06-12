@@ -38,11 +38,13 @@ quit_if_not_installed bash
 
 . "$__LAZY_SCRIPT_HOME__"/details/inner/_bash_identity
 . "$__LAZY_SCRIPT_HOME__"/details/inner/_bash_settings
-. "$__LAZY_SCRIPT_HOME__"/details/inner/_bash_startup_check
-[ -f "$__LAZY_SCRIPT_HOME__"/details/private/_bash_private ] && . "$__LAZY_SCRIPT_HOME__"/details/private/_bash_private
 if [ "$1" == "-a" ]
 then
-	. "$__LAZY_SCRIPT_HOME__"/details/inner/_bash_welcome
+	. "$__LAZY_SCRIPT_HOME__"/details/inner/_bash_startup_check
 	. "$__LAZY_SCRIPT_HOME__"/details/inner/_bash_completion
+	[ -f "$__LAZY_SCRIPT_HOME__"/details/private/_bash_private ] && . "$__LAZY_SCRIPT_HOME__"/details/private/_bash_private -a
+	. "$__LAZY_SCRIPT_HOME__"/details/inner/_bash_welcome
+else
+	[ -f "$__LAZY_SCRIPT_HOME__"/details/private/_bash_private ] && . "$__LAZY_SCRIPT_HOME__"/details/private/_bash_private
 fi
 

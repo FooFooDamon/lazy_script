@@ -22,7 +22,7 @@ usage()
 	echo -e "\nExample 2: $(basename $0) \"https%3A%2F%2Fwww.google.com%2F\" \"https%3A%2F%2Fwww.baidu.com%2F\"" >&2
 	echo "  will get the result:" >&2
 	echo "[https%3A%2F%2Fwww.google.com%2F] -> [https://www.google.com/]" >&2
-	echo "[https%3A%2F%2Fwww.baidu.com%2F] -> [https://www.baidu.com/]" >&2
+	echo -e "[https%3A%2F%2Fwww.baidu.com%2F] -> [https://www.baidu.com/]\n" >&2
 }
 
 version()

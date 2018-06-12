@@ -69,8 +69,7 @@ do_nothing()
 #     1. More script types: .py, .pl, .exp, .js, etc. .
 #     2. Private functions and scripts.
 #     3. Checking that if a private script supports -h option.
-#     4. Tab completion.
-#     5. Smart hint.
+#     4. Smart hint.
 #
 lzhelp()
 {
@@ -416,6 +415,27 @@ _USAGE_OF_env_var_push_back()
 env_var_push_back()
 {
 	_env_var_push --tail $*
+}
+
+_USAGE_OF_add_tab_completion()
+{
+	local _target_func=${FUNCNAME[0]/_USAGE_OF_/}
+	_to_stderr "$_target_func - Adds tab completion for a command."
+	_to_stderr "Usage: $_target_func <command name> \"<word list for completion, delimited by spaces>\""
+	_to_stderr "Example: $_target_func lzhelp \"aa bb cc\""
+	_to_stderr "  will get the result: aa bb cc"
+	_to_stderr "  when Tab key is pressed twice after \"lzhelp<Space key>\"."
+	_to_stderr "Note: This function may supports more complex formats in future."
+}
+
+add_tab_completion()
+{
+	[ $# -ge 2 ] || return $LZ_FALSE
+
+	local _target="$1"
+	local _word_list="$2"
+
+	complete -W "$_word_list" "$_target"
 }
 
 

@@ -1,35 +1,19 @@
 #!/bin/bash
 
-_general_tab_completion_func()
-{
-	COMPREPLY=()
-	local _cur="${COMP_WORDS[COMP_CWORD]}"
-	local _prev="${COMP_WORDS[COMP_CWORD-1]}"
-	local _opts="$1"
-
-	if [[ ${_cur} == * ]]
-	then
-		COMPREPLY=( $(compgen -W "${_opts}" -- ${_cur}) )
-		return 0
-	fi
-}
-
-_test_tab_completion_func()
-{
-	_general_tab_completion_func "help usage version aa bb cc dd ee ff gg hh ii jj"
-}
-
-_lzhelp_tab_completion()
+_lzhelp_word_list()
 {
 	local _funtions_file="$LAZY_SCRIPT_HOME"/details/inner/_shell_common.sh
 	local _functions=`grep "^[A-Za-z][A-Za-z0-9_]\{0,\}()" "$_funtions_file" | sort | grep -v "lzhelp\|do_nothing" | sed "/()/s///g"`
 	local _scripts_dir="$LAZY_SCRIPT_HOME"/details/shortcuts
 	local _scripts=`ls "$_scripts_dir"/ | grep -v shell_common`
 	
-	_general_tab_completion_func "$_functions $_scripts"
+	echo "$_functions $_scripts"
 }
 
-complete -F _test_tab_completion_func test_tab_completion
-complete -F _test_tab_completion_func test_tab_completion.sh
-complete -F _lzhelp_tab_completion lzhelp
+#
+# TODO: Search for word list within each script and execute add_tab_completion automatically.
+#
+add_tab_completion test_tab_completion "help usage version aa bb cc dd ee ff gg hh ii jj"
+add_tab_completion test_tab_completion.sh "help usage version aa bb cc dd ee ff gg hh ii jj"
+add_tab_completion lzhelp "$(_lzhelp_word_list)"
 
