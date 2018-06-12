@@ -28,6 +28,18 @@ shopt -s expand_aliases
 
 ###########################################################
 #####
+##### Aliases
+#####
+###########################################################
+
+alias return_false_if_no_args="[ $# -gt 0 ] || return -1"
+
+alias filter_unused_config_lines_from_pipe="sed \"/^[\ \t]\{0,\}#/d\" | sed \"/^[\ \t]\{0,\}$/d\""
+# TODO: filter_unused_config_lines_from_file does not work!
+#alias filter_unused_config_lines_from_file="sed \"/^[\ \t]\{0,\}#/d\" \"$1\" | sed \"/^[\ \t]\{0,\}$/d\""
+
+###########################################################
+#####
 ##### Variables
 #####
 ###########################################################
@@ -236,8 +248,6 @@ quit_if_no_args()
 {
 	[ $# -gt 0 ] || exit 1
 }
-
-alias return_false_if_no_args="[ $# -gt 0 ] || return $LZ_FALSE"
 
 _USAGE_OF_register_signal()
 {
