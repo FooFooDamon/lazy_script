@@ -36,7 +36,9 @@ alias return_false_if_no_args="[ $# -gt 0 ] || return -1"
 
 alias filter_unused_config_lines_from_pipe="sed \"/^[\ \t]\{0,\}#/d\" | sed \"/^[\ \t]\{0,\}$/d\""
 # TODO: filter_unused_config_lines_from_file does not work!
-#alias filter_unused_config_lines_from_file="sed \"/^[\ \t]\{0,\}#/d\" \"$1\" | sed \"/^[\ \t]\{0,\}$/d\""
+#alias filter_unused_config_lines_from_file='sed "/^[\ \t]\{0,\}#/d" "$1" | sed "/^[\ \t]\{0,\}$/d"'
+
+alias lzreload='. $LAZY_SCRIPT_HOME/import_lazy_script.sh -a'
 
 ###########################################################
 #####

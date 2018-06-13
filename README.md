@@ -20,6 +20,12 @@ A script box for lazy guys. Script types include but are not limited to `Shell`,
 
 3. `Cygwin`: untested ...
 
+### 适用的语言环境 | Language environments for running
+
+1. 简体中文
+
+2. English
+
 ### 依赖程序 | Dependencies
 
 1. **bash**, `awk`, `sed` and `grep`
