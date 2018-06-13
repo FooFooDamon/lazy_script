@@ -192,7 +192,7 @@ handle_sigSYS()
 	echo "TODO: Define what to do here when SIGSYS arises."
 }
 
-source $LAZY_SCRIPT_HOME/details/shell_common.sh || exit 1
+source $LAZY_SCRIPT_HOME/import_lazy_script.sh
 
 ###############################################
 ###

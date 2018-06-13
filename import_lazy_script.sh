@@ -48,3 +48,5 @@ else
 	[ -f "$__LAZY_SCRIPT_HOME__"/details/private/_bash_private ] && . "$__LAZY_SCRIPT_HOME__"/details/private/_bash_private
 fi
 
+return 0
+

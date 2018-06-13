@@ -30,10 +30,7 @@ fi
 # Terminal prompt
 export PS1="\[\e]0;\u@\h: \W\a\]${debian_chroot:+($debian_chroot)}[\u@\h \W]\$ "
 
-_NECESSARY_TOOLS=(gcc g++ make cmake \
-	git svn expect perl \
-	python nodejs vim ctags \
-	cscope)
+_NECESSARY_TOOLS=(expect perl python nodejs)
 
 _NECESSARY_DIRS=($HOME/bin \
 	$HOME/etc \

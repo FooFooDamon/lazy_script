@@ -11,6 +11,8 @@ version()
 
 source $LAZY_SCRIPT_HOME/details/shell_common.sh
 
+quit_if_not_installed git
+
 version_numbers=(`git log | grep ^commit | head -2 | awk '{ print $2 }'`)
 
 git diff ${version_numbers[1]} ${version_numbers[0]} --stat
