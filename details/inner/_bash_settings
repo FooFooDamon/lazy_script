@@ -79,24 +79,10 @@ alias tl="script -f $HOME/logs/terminal_log_\`date +%Y-%m-%d_%H_%M_%S\`.txt"
 ###############################################
 
 # TODO: more platforms and more settings.
-if [ "`to_lower_case $OS_NAME`" = "ubuntu" ]
+if [ "`to_lower_case $OS_NAME`" = "cygwin" ]
 then
-	export PROG_INSTALL="apt install"
-	VIMRC=$HOME/.vimrc
-elif [ "`to_lower_case $OS_NAME`" = "darwin" ]
-then
-	export PROG_INSTALL="brew install"
-	VIMRC=$HOME/.vimrc
-elif [ "`to_lower_case $OS_NAME`" = "cygwin" ]
-then
-	export PROG_INSTALL="unknown_install"
 	VIMRC=$HOME/_vimrc
 else
-	#lzerror "Platform not supported: $OS_NAME"
-	#count_down_quit
-	do_nothing # TODO
+	VIMRC=$HOME/.vimrc
 fi
-
-alias program_install="$PROG_INSTALL"
-alias prog_install="$PROG_INSTALL"
 
