@@ -11,7 +11,7 @@
 
 proc usage {} {
 	global argv0
-	set this_script_name $argv0
+	set this_script_name [ file tail "$argv0" ]
 
 	puts stderr "$this_script_name - <Simple descriptions about this script>"
 	puts stderr "Usage: $this_script_name <Usage format of this script>"
@@ -20,7 +20,7 @@ proc usage {} {
 
 proc version {} {
 	global argv0
-	set this_script_name $argv0
+	set this_script_name [ file tail "$argv0" ]
 
 	puts stdout "${this_script_name}: V1.00.00 2018/06/08"
 }
