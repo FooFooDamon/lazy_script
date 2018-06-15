@@ -30,7 +30,7 @@ fi
 # Terminal prompt
 export PS1="\[\e]0;\u@\h: \W\a\]${debian_chroot:+($debian_chroot)}[\u@\h \W]\$ "
 
-_NECESSARY_TOOLS=(expect perl python nodejs)
+_NECESSARY_TOOLS=(expect perl python nodejs vim)
 
 _NECESSARY_DIRS=($HOME/bin \
 	$HOME/etc \
@@ -92,8 +92,9 @@ then
 	export PROG_INSTALL="unknown_install"
 	VIMRC=$HOME/_vimrc
 else
-	lzerror "Platform not supported: $OS_NAME"
-	count_down_quit
+	#lzerror "Platform not supported: $OS_NAME"
+	#count_down_quit
+	do_nothing # TODO
 fi
 
 alias program_install="$PROG_INSTALL"
