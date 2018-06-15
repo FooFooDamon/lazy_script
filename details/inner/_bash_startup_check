@@ -48,8 +48,8 @@ done
 [ -d $__LAZY_SCRIPT_HOME__/details/shortcuts ] || mkdir -p $__LAZY_SCRIPT_HOME__/details/shortcuts
 find $__LAZY_SCRIPT_HOME__/details/ -name "*.sh" | while read i
 do
-	shortcut=$__LAZY_SCRIPT_HOME__/details/shortcuts/$(basename "$i" .sh)
-	[ -f "$shortcut" ] || ln -s -f -n "$i" "$shortcut"
+	_shortcuts=$__LAZY_SCRIPT_HOME__/details/shortcuts/$(basename "$i" .sh)
+	[ -f "$_shortcuts" ] || ln -s -f -n "$i" "$_shortcuts"
 done
 
 # Permits core file generation for programs
