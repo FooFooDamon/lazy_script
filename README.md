@@ -14,11 +14,9 @@ A script box for lazy guys. Script types include but are not limited to `Shell`,
 
 ### 受支持平台 | Supported Platforms
 
-1. **Ubuntu**: 16.04 or above
+1. **Ubuntu**: 16.04, 18.04
 
-2. `OS X`: untested ...
-
-3. `Cygwin`: untested ...
+2. `macOS`, `Cygwin` and other Linux versions: partial functionalities usable due to lack of some system or third-party tools.
 
 ### 适用的语言环境 | Language environments for running
 
@@ -34,9 +32,9 @@ A script box for lazy guys. Script types include but are not limited to `Shell`,
 
 ### 操作步骤 | Steps
 
-进入到该工具箱根目录，执行：
+进入到该工具箱根目录（***路径不能有空格***），执行：
 
-Enter root directory of this script box, run:
+Enter root directory of this script box(***the whole path can not contain spaces***), run:
 
 ```
 bash install_lazy_script.sh
@@ -59,4 +57,14 @@ Scripts, functions, variables and other things can be used on terminal after suc
 ***注意***：***请务必确保`bash`或其软／硬链接位于 /bin 目录下！*** 安装完成后，***要手动启动一个终端完成初始化！***
 
 ***NOTE***: ***Please make sure the `bash` program or its soft / hard link is in /bin directory!*** After installation, you have to ***start a terminal manually to initialize this script box!***
+
+## 联系方式及反馈 | Contact and Feedback
+
+Author: Wen Xiongchang
+
+Email: udc577@126.com
+
+任何缺陷、建议，欢迎给我发邮件，或在GitHub上创建**问题单**。
+
+Any bugs and recommendations, please send me emails, or create **issues** on GitHub.
 
