@@ -448,10 +448,10 @@ env_var_push_back()
 	_env_var_push --tail $*
 }
 
-_USAGE_OF_add_tab_completion()
+_USAGE_OF_set_tab_completion()
 {
 	local _target_func=${FUNCNAME[0]/_USAGE_OF_/}
-	_to_stderr "$_target_func - Adds tab completion for a command."
+	_to_stderr "$_target_func - Sets tab completion for a command."
 	_to_stderr "Usage: $_target_func <command name> \"<word list for completion, delimited by spaces>\""
 	_to_stderr "Example: $_target_func lzhelp \"aa bb cc\""
 	_to_stderr "  will get the result: aa bb cc"
@@ -459,7 +459,7 @@ _USAGE_OF_add_tab_completion()
 	_to_stderr "Note: This function may supports more complex formats in future."
 }
 
-add_tab_completion()
+set_tab_completion()
 {
 	[ $# -ge 2 ] || return $LZ_FALSE
 
@@ -485,7 +485,7 @@ do
 done
 
 #
-# Checks if user wants help.
+# Checks if user wants help or version printing.
 # The script to which this _shell_common.sh is imported
 # MUST implement the usage() function!
 #
