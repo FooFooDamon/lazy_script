@@ -3,7 +3,5 @@
 #
 # TODO: Search for word list within each script and execute set_tab_completion automatically.
 #
-set_tab_completion test_tab_completion "help usage version aa bb cc dd ee ff gg hh ii jj"
-set_tab_completion test_tab_completion.sh "help usage version aa bb cc dd ee ff gg hh ii jj"
 set_tab_completion lzhelp "${LZ_PUBLIC_FUNCTIONS[*]} ${LZ_PUBLIC_SCRIPT_BASE_NAMES[*]}"
 
