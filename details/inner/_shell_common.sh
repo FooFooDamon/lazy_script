@@ -46,12 +46,18 @@ alias lzreload='. $LAZY_SCRIPT_HOME/import_lazy_script.sh -a'
 #####
 ###########################################################
 
-_DATE_TIME_HINT="date +%Y-%m-%d_%H:%M:%S"
+_DATE_TIME_HINT="date +%Y-%m-%d_%H:%M:%S.%N"
 
 export SHELL="`which bash`"
 
-export SCRIPT_NAME=$(basename "$0")
-export SCRIPT_DIR=`cd $(dirname "$0") && pwd`
+if [[ "$0" = "bash" || "$0" = "-bash" ]]
+then
+	export SCRIPT_NAME=bash
+	export SCRIPT_DIR=$HOME
+else
+	export SCRIPT_NAME=$(basename "$0")
+	export SCRIPT_DIR=`cd $(dirname "$0") && pwd`
+fi
 
 # TODO: Use 'kill -l' to fetch these items automatically!
 _SIG_ITEMS=(HUP INT QUIT ILL \
