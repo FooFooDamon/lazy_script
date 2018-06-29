@@ -264,7 +264,7 @@ register_signal()
 {
 	return_false_if_no_args
 
-	if [ "$0" = "bash" ]
+	if [[ "$0" = "bash" || "$0" = "-bash" ]]
 	then
 		do_nothing
 	else
