@@ -52,6 +52,8 @@ do
 	[ -f "$_shortcuts" ] || ln -s -f -n "$i" "$_shortcuts"
 done
 
+find "$__LAZY_SCRIPT_HOME__"/ -type f | grep -v "\.git\|\.svn" | xargs chmod +x
+
 # Permits core file generation for programs
 ulimit -c unlimited
 
