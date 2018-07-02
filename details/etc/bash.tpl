@@ -9,13 +9,13 @@
 ###
 ###############################################
 
-DATE_TIME_HINT="date +%Y-%m-%d_%H:%M:%S"
+DATE_TIME_HINT="date +%Y-%m-%d_%H:%M:%S.%N"
 
 usage()
 {
 	echo "$(basename $0) - <Simple descriptions about this script ...>" >&2
 	echo "Usage: $(basename $0) <Usage format of this script ...>" >&2
-	echo "Examples: $(basename $0) <Usage examples of this script ...>" >&2
+	echo "Example: $(basename $0) <Usage example of this script ...>" >&2
 }
 
 version()
