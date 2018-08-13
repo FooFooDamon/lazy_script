@@ -30,7 +30,7 @@ echo "### Operating system: $OS_NAME $OS_FULL_VERSION"
 echo "###"
 echo "### Home directory of Lazy-script: $LAZY_SCRIPT_HOME"
 echo "###"
-echo "### Author: Wen Xiongchang(Email: udc577@126.com; GitHub: FooFooDamon)"
+echo "### Author: Wen Xiongchang (Email: udc577@126.com; GitHub: FooFooDamon)"
 echo "###"
 for ((i = 0; i < $_EXPECTED_COLUMNS; i++)); do printf "#"; done
 echo ""
