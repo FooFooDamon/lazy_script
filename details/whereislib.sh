@@ -209,7 +209,7 @@ if [ $# -ne 1 ]; then
 	exit 1
 fi
 
-KNOWN_LIB_DIRS=(/usr/lib /lib /lib32 /lib64 /usr/local/lib /usr/share)
+KNOWN_LIB_DIRS=(/usr/lib /lib /lib32 /lib64 /usr/local/lib)
 
 echo $LD_LIBRARY_PATH | sed "/:/s//\n/g" > /tmp/$(basename $0).tmp
 echo ${KNOWN_LIB_DIRS[*]} | sed "/\ /s//\n/g" >> /tmp/$(basename $0).tmp
