@@ -21,7 +21,10 @@ usage()
 
 version()
 {
-	echo "$(basename $0): V1.00.00 2018/08/25"
+	# Added $KNOWN_LIB_DIRS
+	echo "$(basename $0): V1.00.01 2018/09/07"
+	# Initial version
+	#echo "$(basename $0): V1.00.00 2018/08/25"
 }
 
 handle_sigHUP()
@@ -206,7 +209,10 @@ if [ $# -ne 1 ]; then
 	exit 1
 fi
 
+KNOWN_LIB_DIRS=(/usr/lib /lib /lib32 /lib64 /usr/local/lib /usr/share)
+
 echo $LD_LIBRARY_PATH | sed "/:/s//\n/g" > /tmp/$(basename $0).tmp
+echo ${KNOWN_LIB_DIRS[*]} | sed "/\ /s//\n/g" >> /tmp/$(basename $0).tmp
 cat `ls /etc/ld.so.conf.d/*.conf` /tmp/$(basename $0).tmp | grep -v "#" | sort | uniq | while read i
 do
 	[ -d "$i" ] || continue
