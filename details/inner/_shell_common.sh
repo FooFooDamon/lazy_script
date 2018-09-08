@@ -214,7 +214,8 @@ _USAGE_OF_is_integer()
 
 is_integer()
 {
-	[[ $1 == *[!0-9+\-]* ]] && return $LZ_TRUE || return $LZ_FALSE
+	_filtered_str=`echo "$1" | grep "^[+-]\{0,1\}[0-9]\{1,\}$"`
+	[ -n "$_filtered_str" ] && return $LZ_TRUE || return $LZ_FALSE
 }
 
 _USAGE_OF_to_lower_case()
