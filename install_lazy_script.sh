@@ -65,7 +65,7 @@ else
 	source $__LAZY_SCRIPT_HOME__/details/inner/_bash_identity
 	source $__LAZY_SCRIPT_HOME__/details/inner/_bash_settings
 	[ -f $bash_profile ] && sed -i "/LAZY_SCRIPT_HOME/d" $bash_profile
-	[ -f $VIMRC ] && sed -i "/LAZY_SCRIPT_HOME/d" $VIMRC
+	#[ -f $VIMRC ] && sed -i "/LAZY_SCRIPT_HOME/d" $VIMRC
 	echo "Lazy-script: Congratulations, you've get rid of me ~ ~ ~" >&2
 	echo "You can manually remove these programs if you don't need them: ${_NECESSARY_TOOLS[@]}" >&2
 	echo "And these directories: ${_NECESSARY_DIRS[@]}" >&2

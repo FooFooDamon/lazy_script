@@ -135,6 +135,6 @@ if [ `grep LAZY_SCRIPT_HOME $VIMRC -c` -eq 0 ]; then
 	echo "if \$LAZY_SCRIPT_HOME != \"\"" >> $VIMRC
 	echo -e "\tsource \$LAZY_SCRIPT_HOME/details/etc/vimrc.public" >> $VIMRC
 	echo -e "\tsource \$LAZY_SCRIPT_HOME/details/private/vim/vimrc.private" >> $VIMRC
-	echo "endif" >> $VIMRC
+	echo "endif \" \$LAZY_SCRIPT_HOME" >> $VIMRC
 fi
 
