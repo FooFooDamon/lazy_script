@@ -28,7 +28,7 @@ __LAZY_SCRIPT_HOME__=`cd $(dirname $0) && pwd`
 
 if [ $is_add -eq 1 ]
 then
-	if [ `grep lazy_script $bash_profile -c` -eq 0 ]
+	if [ `grep LAZY_SCRIPT $bash_profile -c` -eq 0 ]
 	then
 		echo "Installing Lazy-script, please wait ..." >&2
 	else
