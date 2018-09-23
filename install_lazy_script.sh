@@ -55,6 +55,7 @@ done
 if [ $is_add -eq 1 ]
 then
 	find "$__LAZY_SCRIPT_HOME__"/ -type f | xargs chmod 777
+	echo "" >> $bash_profile
 	echo "export __LAZY_SCRIPT_HOME__=$__LAZY_SCRIPT_HOME__" >> $bash_profile
 	echo ". \$__LAZY_SCRIPT_HOME__/import_lazy_script.sh -a" >> $bash_profile
 	ln -s -f -n $__LAZY_SCRIPT_HOME__/details/inner/_shell_common.sh $__LAZY_SCRIPT_HOME__/details/shell_common.sh
