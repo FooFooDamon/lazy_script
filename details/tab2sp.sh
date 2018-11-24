@@ -22,7 +22,8 @@ usage()
 
 version()
 {
-	echo "$(basename $0): V1.00.00 2018/09/08"
+	echo "$(basename $0): V1.00.01 2018/11/24"
+	#echo "$(basename $0): V1.00.00 2018/09/08"
 }
 
 handle_sigHUP()
@@ -264,7 +265,12 @@ do
 			if [ $is_valid_type -eq 0 ]
 			then
 				lzerror "*** [$i]: Invalid file type, use the -F option if you're sure you want to convert this file."
-				continue
+				if [ $# -eq 1 ]
+				then
+					exit 1
+				else
+					continue
+				fi
 			fi
 		fi
 
