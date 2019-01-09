@@ -50,7 +50,7 @@ _DATE_TIME_HINT="date +%Y-%m-%d_%H:%M:%S.%N"
 
 export SHELL="`which bash`"
 
-if [[ "$0" = "bash" || "$0" = "-bash" ]]
+if [[ "$0" = "bash" || "$0" = "-bash" || "$0" = "/bin/bash" ]]
 then
 	export SCRIPT_NAME=bash
 	export SCRIPT_DIR=$HOME
@@ -271,7 +271,7 @@ register_signal()
 {
 	return_false_if_no_args
 
-	if [[ "$0" = "bash" || "$0" = "-bash" ]]
+	if [[ "$0" = "bash" || "$0" = "-bash" || "$0" = "/bin/bash" ]]
 	then
 		do_nothing
 	else
