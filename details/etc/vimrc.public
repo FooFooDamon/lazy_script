@@ -1,3 +1,4 @@
 autocmd BufNewFile *.sh 0r $LAZY_SCRIPT_HOME/details/etc/bash.tpl
 autocmd BufNewFile *.exp 0r $LAZY_SCRIPT_HOME/details/etc/expect.tpl
 autocmd BufNewFile *.md 0r $LAZY_SCRIPT_HOME/details/etc/markdown.tpl
+autocmd BufNewFile *.py 0r $LAZY_SCRIPT_HOME/details/etc/python.tpl
