@@ -473,7 +473,7 @@ set_tab_completion()
 	local _target="$1"
 	local _word_list="$2"
 
-	complete -W "$_word_list" "$_target"
+	complete -d -f -W "$_word_list" "$_target"
 }
 
 
