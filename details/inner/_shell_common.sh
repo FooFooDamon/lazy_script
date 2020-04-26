@@ -276,7 +276,8 @@ register_signal()
 		do_nothing
 	else
 		#trap "[ \"$1\" != \"CHLD\" ] && lzwarn \"\$($_DATE_TIME_HINT): ${SCRIPT_NAME}: SIG$1 captured, signal handler [handle_sig$1] is about to run.\"; handle_sig$1" $1
-		trap "lzwarn \"\$($_DATE_TIME_HINT): ${SCRIPT_NAME}: SIG$1 captured, signal handler [handle_sig$1] is about to run.\"; handle_sig$1" $1
+		#trap "lzwarn \"\$($_DATE_TIME_HINT): ${SCRIPT_NAME}: SIG$1 captured, signal handler [handle_sig$1] is about to run.\"; handle_sig$1" $1
+		trap "handle_sig$1" $1
 	fi
 }
 
