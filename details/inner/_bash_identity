@@ -29,8 +29,8 @@ then
 	export OS_NAME=Cygwin
 	export OS_FULL_VERSION="1.0" # TODO: use uname?
 else
-	export OS_NAME=`lsb_release -i | awk -F : '{ print $2 }' | awk '{ print $1 }'`
-	export OS_FULL_VERSION=`lsb_release -r | awk -F : '{ print $2 }' | awk '{ print $1 }'`
+	[ -n "$(which lsb_release)" ] && export OS_NAME=`lsb_release -i | awk -F : '{ print $2 }' | awk '{ print $1 }'` || export OS_NAME=Unknown
+	[ -n "$(which lsb_release)" ] && export OS_FULL_VERSION=`lsb_release -r | awk -F : '{ print $2 }' | awk '{ print $1 }'` || export OS_FULL_VERSION=0.0
 fi
 export OS_MAJOR_VERSION=`echo $OS_FULL_VERSION | awk -F . '{ printf("%d\n", $1) }'`
 export OS_MINOR_VERSION=`echo $OS_FULL_VERSION | awk -F . '{ printf("%d\n", $2) }'`
