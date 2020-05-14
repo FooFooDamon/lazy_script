@@ -67,6 +67,7 @@ alias tabs_to_spaces="expand"
 alias tabs_to_4spaces="expand -t 4"
 alias clear_swapness="sync;sudo swapoff -a;sudo swapon -a"
 #alias rm=mv $* $HOME/Trash
+alias rm=safer-rm
 alias tl="script -f $HOME/logs/terminal_log_\`date +%Y-%m-%d_%H_%M_%S\`.txt"
 
 ###############################################
