@@ -3,3 +3,4 @@
 /details/private.bk.*
 /details/shortcuts
 .*.swp
+__pycache__
