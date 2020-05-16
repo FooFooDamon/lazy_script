@@ -46,7 +46,7 @@ do
 done
 
 [ -d $__LAZY_SCRIPT_HOME__/details/shortcuts ] || mkdir -p $__LAZY_SCRIPT_HOME__/details/shortcuts
-find $__LAZY_SCRIPT_HOME__/details/ -name "*.sh" | while read i
+find $__LAZY_SCRIPT_HOME__/details/ -name "*.sh" -o -name "*.py" | while read i
 do
 	_shortcuts=$__LAZY_SCRIPT_HOME__/details/shortcuts/$(basename "$i" .sh)
 	[ -f "$_shortcuts" ] || ln -s -f -n "$i" "$_shortcuts"
