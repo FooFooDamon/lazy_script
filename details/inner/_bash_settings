@@ -27,7 +27,7 @@ then
 	exit 1
 fi
 
-_NECESSARY_TOOLS=(expect perl python nodejs vim)
+_NECESSARY_TOOLS=(expect perl python3 nodejs vim)
 
 _NECESSARY_DIRS=($HOME/bin \
 	$HOME/etc \
