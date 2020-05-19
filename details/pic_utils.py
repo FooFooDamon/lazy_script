@@ -13,7 +13,7 @@ except Exception as ex:
     print("*** Failed to import magic: %s: %s" % (type(ex), ex), file = sys.stderr)
     if isinstance(ex, ModuleNotFoundError):
         print("Run \"pip3 install python-magic\" or some other command to install it first!", file = sys.stderr)
-    sys.exit(1)
+    raise ex
 
 try:
     import numpy as np
@@ -21,7 +21,7 @@ except Exception as ex:
     print("*** Failed to import numpy: %s: %s" % (type(ex), ex), file = sys.stderr)
     if isinstance(ex, ModuleNotFoundError):
         print("Run \"pip3 install numpy\" or some other command to install NumPy first!", file = sys.stderr)
-    sys.exit(1)
+    raise ex
 
 try:
     import cv2
@@ -30,7 +30,7 @@ except Exception as ex:
     print("*** Failed to import cv2: %s: %s" % (type(ex), ex), file = sys.stderr)
     if isinstance(ex, ModuleNotFoundError):
         print("Run \"pip3 install opencv-python\" or some other command to install OpenCV first!", file = sys.stderr)
-    sys.exit(1)
+    raise ex
 
 try:
     from PIL import Image, ImageSequence, ImageFile
@@ -39,7 +39,7 @@ except Exception as ex:
     print("*** Failed to import PIL components: %s: %s" % (type(ex), ex), file = sys.stderr)
     if isinstance(ex, ModuleNotFoundError):
         print("Run \"pip3 install pillow\" or some other command to install PIL first!", file = sys.stderr)
-    sys.exit(1)
+    raise ex
 
 @unique
 class ImageType(IntEnum):
