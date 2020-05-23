@@ -88,7 +88,7 @@ def get_image_type(file):
 
 def get_image_suffix(type_num):
     try:
-        return SUPPORTED_TYPE_STRINGS[SUPPORTED_TYPE_NUMBERS.index(type_num)]
+        return "." + SUPPORTED_TYPE_STRINGS[SUPPORTED_TYPE_NUMBERS.index(type_num)].lower()
     except Exception:
         raise TypeError("Value of type_num must be one of %s" % SUPPORTED_TYPE_NUMBERS)
 
