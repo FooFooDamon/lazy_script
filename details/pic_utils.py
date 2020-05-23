@@ -86,6 +86,12 @@ def get_image_type(file):
     except Exception as ex:
         return (ImageType.IMG_UNKNOWN, type_str)
 
+def get_image_suffix(type_num):
+    try:
+        return SUPPORTED_TYPE_STRINGS[SUPPORTED_TYPE_NUMBERS.index(type_num)]
+    except Exception:
+        raise TypeError("Value of type_num must be one of %s" % SUPPORTED_TYPE_NUMBERS)
+
 SUPPORTED_CHANNELS = [ -1, 1, 3, 4 ]
 SUPPORTED_CHANNEL_ORDERS = [ "RGB", "BGR" ]
 
