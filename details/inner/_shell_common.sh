@@ -70,7 +70,13 @@ _SIG_ITEMS=(HUP INT QUIT ILL \
 	IO PWR SYS)
 
 export LZ_TRUE=0
-export LZ_FALSE=-1
+export LZ_FALSE=1
+
+export LZ_ERR_OK=0
+export LZ_ERR_GENERAL=1
+export LZ_ERR_BUILT_IN_COMMAND_ERROR=2
+export LZ_ERR_PERMISSION_DENIED=126
+export LZ_ERR_COMMAND_NOT_FOUND=127
 
 if [ `echo $BASH_SOURCE | grep inner -c` -gt 0 ]
 then
@@ -166,6 +172,40 @@ lzhelp()
 		done
 	fi
 
+}
+
+_USAGE_OF_lzret()
+{
+	local _target_func=${FUNCNAME[0]/_USAGE_OF_/}
+	_to_stderr "$_target_func - Show description of a return code"
+	_to_stderr "Usage: $_target_func <return-code>"
+	_to_stderr "Example: $_target_func 1"
+}
+
+lzret()
+{
+	if [ "$1" = "" ]; then
+		lzerror "Return code not specified"
+		return LZ_ERR_GENERAL
+	fi
+
+	if [ "$1" = "$LZ_ERR_OK" ]; then
+		echo "${1}: OK"
+	elif [ "$1" = "$LZ_ERR_GENERAL" ]; then
+		echo "${1}: General error"
+	elif [ "$1" = "$LZ_ERR_BUILT_IN_COMMAND_ERROR" ]; then
+		echo "${1}: Built-in command error"
+	elif [ "$1" = "$LZ_ERR_PERMISSION_DENIED" ]; then
+		echo "${1}: Permission denied"
+	elif [ "$1" = "$LZ_ERR_COMMAND_NOT_FOUND" ]; then
+		echo "${1}: Command not found"
+	elif [ "$1" -gt 128 ] && [ "$1" -le 192 ]; then
+		local _signum=$(($1 - 128))
+		local _signame=$(kill -l | grep "\<${_signum}\>)" | sed "/.*\<${_signum}\>)[ \t]\{0,\}\([A-Za-z0-9+-]*\).*/s//\1/g")
+		echo "${1}: Interrupted or killed by signal $_signame"
+	else
+		echo "${1}: Unknown error"
+	fi
 }
 
 _USAGE_OF_lzwarn()
