@@ -75,8 +75,9 @@ export LZ_FALSE=1
 export LZ_ERR_OK=0
 export LZ_ERR_GENERAL=1
 export LZ_ERR_BUILT_IN_COMMAND_ERROR=2
-export LZ_ERR_PERMISSION_DENIED=126
+export LZ_ERR_EXECUTABLE_ERROR=126
 export LZ_ERR_COMMAND_NOT_FOUND=127
+export LZ_ERR_INVALID_ARGUMENT=128
 
 if [ `echo $BASH_SOURCE | grep inner -c` -gt 0 ]
 then
@@ -192,13 +193,18 @@ lzret()
 	if [ "$1" = "$LZ_ERR_OK" ]; then
 		echo "${1}: OK"
 	elif [ "$1" = "$LZ_ERR_GENERAL" ]; then
-		echo "${1}: General error"
+		echo "${1}: Catchall for general errors"
 	elif [ "$1" = "$LZ_ERR_BUILT_IN_COMMAND_ERROR" ]; then
-		echo "${1}: Built-in command error"
-	elif [ "$1" = "$LZ_ERR_PERMISSION_DENIED" ]; then
-		echo "${1}: Permission denied"
+		echo "${1}: Misuse of shell built-in commands"
+	elif [ "$1" = "$LZ_ERR_EXECUTABLE_ERROR" ]; then
+		echo "${1}: Not an executable, or permission denied"
 	elif [ "$1" = "$LZ_ERR_COMMAND_NOT_FOUND" ]; then
 		echo "${1}: Command not found"
+	elif [ "$1" = "$LZ_ERR_INVALID_ARGUMENT" ]; then
+		echo "${1}: Invalid argument"
+	elif [ "$1" -ge 64 ] && [ "$1" -le 78 ]; then
+		local _errmsg=$(grep "\<$1\>" /usr/include/sysexits.h | grep -v "\<EX__BASE\>\|\<EX__MAX\>" | sed "s/.*\/\*\(.*\)\*\//\1/")
+		echo "${1}: $_errmsg"
 	elif [ "$1" -gt 128 ] && [ "$1" -le 192 ]; then
 		local _signum=$(($1 - 128))
 		local _signame=$(kill -l | grep "\<${_signum}\>)" | sed "/.*\<${_signum}\>)[ \t]\{0,\}\([A-Za-z0-9+-]*\).*/s//\1/g")
