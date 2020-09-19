@@ -46,7 +46,8 @@ env_var_push_front PYTHONPATH $__LAZY_SCRIPT_HOME__/lib/customized_python_librar
 
 alias sudo="sudo env LAZY_SCRIPT_HOME=$__LAZY_SCRIPT_HOME__ PATH=$PATH LD_LIBRARY_PATH=$LD_LIBRARY_PATH PYTHONPATH=$PYTHONPATH"
 
-export CPU_CORES=`cat /proc/cpuinfo | grep "processor" | wc -l`
+export CPU_CORES=`grep -c "processor" /proc/cpuinfo`
+[ -n "$LZ_RETRIES" ] || export LZ_RETRIES=5
 alias make="time make"
 alias jmake="time make -j $CPU_CORES"
 alias vmake="time make VERBOSE=1"
