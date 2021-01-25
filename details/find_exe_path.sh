@@ -10,7 +10,13 @@ usage()
 
 version()
 {
-	echo "$(basename $0): V1.00.00 2018/06/08"
+	echo "$(basename $0): V1.00.01 2021/01/25"
+	#echo "$(basename $0): V1.00.00 2018/06/08"
+}
+
+handle_sigCHLD()
+{
+	printf ""
 }
 
 source $LAZY_SCRIPT_HOME/details/shell_common.sh
