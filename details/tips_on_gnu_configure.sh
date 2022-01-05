@@ -2,13 +2,13 @@
 
 usage()
 {
-	echo "$(basename $0): Prints tips on GNU configure script usage." >&2
-	echo "Usage: $(basename $0)" >&2
+    echo "$(basename $0): Prints tips on GNU configure script usage." >&2
+    echo "Usage: $(basename $0)" >&2
 }
 
 version()
 {
-	echo "$(basename $0): V1.00.00 2018/06/10"
+    echo "$(basename $0): V1.00.00 2018/06/10"
 }
 
 source $LAZY_SCRIPT_HOME/details/shell_common.sh
