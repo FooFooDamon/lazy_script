@@ -14,11 +14,11 @@
 
 if [ "$BASH_SOURCE" = "$0" ]
 then
-	echo -e "\e[0;31m*** $(basename $BASH_SOURCE) can not be executed directly! Use it as below:\e[0m" >&2
-	echo "    . \"$BASH_SOURCE\"" >&2
-	echo "or:" >&2
-	echo "    source \"$BASH_SOURCE\"" >&2
-	exit 1
+    echo -e "\e[0;31m*** $(basename $BASH_SOURCE) can not be executed directly! Use it as below:\e[0m" >&2
+    echo "    . \"$BASH_SOURCE\"" >&2
+    echo "or:" >&2
+    echo "    source \"$BASH_SOURCE\"" >&2
+    exit 1
 fi
 
 #export LAZY_SCRIPT_HOME=$__LAZY_SCRIPT_HOME__
@@ -26,11 +26,11 @@ export LAZY_SCRIPT_HOME=$(cd "$(dirname $BASH_SOURCE)"/../.. && pwd)
 
 if [ `uname -o | grep -i "Cygwin" -c` -gt 0 ]
 then
-	export OS_NAME=Cygwin
-	export OS_FULL_VERSION="1.0" # TODO: use uname?
+    export OS_NAME=Cygwin
+    export OS_FULL_VERSION="1.0" # TODO: use uname?
 else
-	[ -n "$(which lsb_release)" ] && export OS_NAME=`lsb_release -i | awk -F : '{ print $2 }' | awk '{ print $1 }'` || export OS_NAME=Unknown
-	[ -n "$(which lsb_release)" ] && export OS_FULL_VERSION=`lsb_release -r | awk -F : '{ print $2 }' | awk '{ print $1 }'` || export OS_FULL_VERSION=0.0
+    [ -n "$(which lsb_release)" ] && export OS_NAME=`lsb_release -i | awk -F : '{ print $2 }' | awk '{ print $1 }'` || export OS_NAME=Unknown
+    [ -n "$(which lsb_release)" ] && export OS_FULL_VERSION=`lsb_release -r | awk -F : '{ print $2 }' | awk '{ print $1 }'` || export OS_FULL_VERSION=0.0
 fi
 export OS_MAJOR_VERSION=`echo $OS_FULL_VERSION | awk -F . '{ printf("%d\n", $1) }'`
 export OS_MINOR_VERSION=`echo $OS_FULL_VERSION | awk -F . '{ printf("%d\n", $2) }'`

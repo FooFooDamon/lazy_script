@@ -20,24 +20,24 @@
 
 if [ "$BASH_SOURCE" = "$0" ]
 then
-	echo -e "\e[0;31m*** $(basename $BASH_SOURCE) can not be executed directly! Use it as below:\e[0m" >&2
-	echo "    . \"$BASH_SOURCE\"" >&2
-	echo "or:" >&2
-	echo "    source \"$BASH_SOURCE\"" >&2
-	exit 1
+    echo -e "\e[0;31m*** $(basename $BASH_SOURCE) can not be executed directly! Use it as below:\e[0m" >&2
+    echo "    . \"$BASH_SOURCE\"" >&2
+    echo "or:" >&2
+    echo "    source \"$BASH_SOURCE\"" >&2
+    exit 1
 fi
 
 _NECESSARY_TOOLS=(expect perl python3 vim)
 
 _NECESSARY_DIRS=($HOME/bin \
-	$HOME/etc \
-	$HOME/include \
-	$HOME/lib \
-	$HOME/docs \
-	$HOME/logs \
-	$HOME/src \
-	$__LAZY_SCRIPT_HOME__/details/private \
-	$__LAZY_SCRIPT_HOME__/details/private/vim)
+    $HOME/etc \
+    $HOME/include \
+    $HOME/lib \
+    $HOME/docs \
+    $HOME/logs \
+    $HOME/src \
+    $__LAZY_SCRIPT_HOME__/details/private \
+    $__LAZY_SCRIPT_HOME__/details/private/vim)
 
 env_var_push_front PATH $HOME/bin $__LAZY_SCRIPT_HOME__/details $__LAZY_SCRIPT_HOME__/details/shortcuts $__LAZY_SCRIPT_HOME__/details/private
 
@@ -80,8 +80,8 @@ alias tl="script -f $HOME/logs/terminal_log_\`date +%Y-%m-%d_%H_%M_%S\`.txt"
 # TODO: more platforms and more settings.
 if [ "`to_lower_case $OS_NAME`" = "cygwin" ]
 then
-	VIMRC=$HOME/_vimrc
+    VIMRC=$HOME/_vimrc
 else
-	VIMRC=$HOME/.vimrc
+    VIMRC=$HOME/.vimrc
 fi
 
