@@ -65,7 +65,7 @@ you have to ***start a terminal manually to initialize this script box!***
 
 ## 联系方式及反馈 | Contact and Feedback
 
-Author: Wen Xiongchang
+Author: Wen Xiongchang (Man Hung-Coeng)
 
 Email: <udc577@126.com>
 
