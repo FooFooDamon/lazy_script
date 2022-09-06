@@ -5,7 +5,7 @@
 #
 #  Created on: 2018-05-28
 #
-#      Author: WenXiongchang (udc577@126.com)
+#      Author: Man Hung-Coeng (udc577@126.com)
 #
 # Description: Some required or frequently used tools, such as constants,
 #              (environment) variables, functions and prerequisite operations.
