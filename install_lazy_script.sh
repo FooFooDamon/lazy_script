@@ -57,6 +57,7 @@ then
 	find "$__LAZY_SCRIPT_HOME__"/ -type f | xargs chmod 777
 	echo "" >> $bash_profile
 	echo "export __LAZY_SCRIPT_HOME__=$__LAZY_SCRIPT_HOME__" >> $bash_profile
+	echo "alias lzimport=\". $__LAZY_SCRIPT_HOME__/import_lazy_script.sh -a\"" >> $bash_profile
 	echo ". \$__LAZY_SCRIPT_HOME__/import_lazy_script.sh -a" >> $bash_profile
 	ln -s -f -n $__LAZY_SCRIPT_HOME__/details/inner/_shell_common.sh $__LAZY_SCRIPT_HOME__/details/shell_common.sh
 	printf "\nLazy-script was installed successfully! Now \e[0;33mstart a terminal manually to initialize this script box!\e[0m\n"
