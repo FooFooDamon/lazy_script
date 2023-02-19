@@ -12,6 +12,14 @@ It can help you manage your system, be convenient for code formatting and compil
 
 ***Less code, better world!***
 
+***[2023-02-19] 注***：该项目的**实现有些混乱**，已停止更新，
+请关注新项目“[懒编程秘笈](https://github.com/FooFooDamon/lazy_coding_skills.git)”
+的`scripts`和`vim`模块。
+
+> ***[2023-02-19] NOTE***：**Implementation** of this project is **a little chaotic**,
+thus this project is no longer updated, please focus on the `scripts` and `vim` modules
+of a new project "[Lazy Coding Skills](https://github.com/FooFooDamon/lazy_coding_skills.git)".
+
 ## 安装及卸载 | Installation and Uninstallation
 
 ### 受支持平台 | Supported Platforms
@@ -65,7 +73,7 @@ you have to ***start a terminal manually to initialize this script box!***
 
 ## 联系方式及反馈 | Contact and Feedback
 
-Author: Man Hung-Coeng (Man Hung-Coeng)
+Author: Man Hung-Coeng
 
 Email: <udc577@126.com>
 
